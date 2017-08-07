@@ -1,0 +1,16 @@
+.heading{
+  text-align: center;
+}
+.formClass{
+  text-align: center;
+}
+.loginMessage
+{
+  text-align: center;
+  color:blue;
+}
+.loginInValidMessage
+{
+  text-align: center;
+  color:crimson;
+}

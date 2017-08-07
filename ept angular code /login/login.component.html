@@ -1,0 +1,27 @@
+<div>
+  <br/>
+  <br/>
+  <br/>
+  <h2 class="heading">Login Form</h2>
+</div>
+<form class="formClass" [formGroup]="managerForm" (ngSubmit)="onSubmit()">
+  <label>User Name</label><br/>
+
+  <input type="text" placeholder="Employee Id" formControlName="userName"><br/><br/>
+
+  <label>Password</label><br/>
+  <input type="password" placeholder="password" formControlName="password" ><br/><br/>
+  <button type="submit">Login</button>
+  <button type="reset">Reset</button>
+</form>
+<br/>
+<br/>
+<div *ngIf=valid>
+  <p class="loginValidMessage">Login Sucessfull</p>
+</div>
+<div *ngIf=notValid>
+  <p class="loginInValidMessage">Invalid username or password</p></div>
+
+
+
+
