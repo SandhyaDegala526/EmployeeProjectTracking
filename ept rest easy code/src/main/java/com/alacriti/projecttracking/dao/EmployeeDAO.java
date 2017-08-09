@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.alacriti.projecttracking.model.Employee;
 
+
 public class EmployeeDAO extends BaseDAO {
 
 	public EmployeeDAO() {
@@ -27,7 +28,8 @@ public class EmployeeDAO extends BaseDAO {
 			list = new ArrayList<Employee>();
 
 			conn=getConnection();
-			stmt = conn.prepareStatement("select employee_id,employee_name,employee_state from sandhyad_ept_employee;");
+			stmt = conn.prepareStatement
+					("select employee_id,employee_name,employee_state from sandhyad_ept_employee_details;");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				list.add(new Employee(rs.getString(1), rs
@@ -40,19 +42,12 @@ public class EmployeeDAO extends BaseDAO {
 
 		} finally {
 
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			close(stmt, rs);
 		}
 		return list;
 
 	}
-	public void addEmployee(Employee employees[]) throws DAOException{
+	public void addEmployee(Employee employee) throws DAOException{
 		
 		Connection conn=null;
 		PreparedStatement stmt=null;
@@ -60,27 +55,22 @@ public class EmployeeDAO extends BaseDAO {
 		try{
 			
 		     conn=getConnection();
-		     stmt=conn.prepareStatement("insert into sandhyad_ept_employee(employee_id,employee_name,employee_status) values(?,?,?)");
-		     for(int i=0;i<(employees.length);i++){
-		    	 stmt.setString(1,employees[i].getEmployeeId());
-		    	 stmt.setString(2, employees[i].getEmployeeName());
-		    	 stmt.setString(3, employees[i].getEmployeeStatus());
+		     stmt=conn.prepareStatement
+		  ("insert into sandhyad_ept_employee_details(employee_id,employee_name,employee_state) values(?,?,?)");
+		
+		    	 stmt.setString(1,employee.getEmployeeId());
+		    	 stmt.setString(2, employee.getEmployeeName());
+		    	 stmt.setString(3, employee.getEmployeeState());
 		  
 		    	 stmt.executeUpdate();
-		    	 }
+		  
 			}catch(SQLException e){
 			System.out.println("Error  :" + e.getMessage());
 			throw new DAOException("Exception in addEmployee in Employee");
 
 		}
-		/*finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}*/
+		finally {
+			close(stmt);
+		}
 }
 }

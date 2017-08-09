@@ -33,11 +33,11 @@ public class ProjectBO extends BaseDAO {
 		}
 		return list;
 	}
-	public void addProjects(Project projects[]) throws BOException {
+	public void addProjects(Project project) throws BOException {
 		ProjectDAO accountDAO=null;
 		try {
 			accountDAO = new ProjectDAO(getConnection());
-			 accountDAO.addProject(projects);
+			 accountDAO.addProject(project);
 		} catch (DAOException e) {
 			
 			throw new BOException("DAOException Occured");

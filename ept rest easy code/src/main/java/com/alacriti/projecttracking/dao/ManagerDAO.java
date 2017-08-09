@@ -24,8 +24,7 @@ public boolean verify(Login login)throws DAOException{
 	
 	try{
 		
-		String sqlCmd = "select empId,password from sandhyad_EmpProjectTracking_LoginDetails "+
-	"where empId=? and password=?;";
+		String sqlCmd = "select emp_id,password from sandhyad_ept_login_details where emp_id=? and password=?";
 		conn=getConnection();
 		stmt=conn.prepareStatement(sqlCmd);
 		stmt.setString(1, login.getEmpId());
@@ -40,15 +39,9 @@ public boolean verify(Login login)throws DAOException{
 		System.out.println("Error  :" + e.getMessage());
 		throw new DAOException("SQLException in ManagerDAO:", e);
 	}
-	/*finally {
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}*/
+	finally {
+		close(stmt,rs);
+	}
 	return flag;
 }
 

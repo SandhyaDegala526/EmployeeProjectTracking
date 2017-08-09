@@ -26,9 +26,9 @@ public class ProjectResource {
 	@Path("addProject")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void add(Project projects[])
+	public void add(Project project)
 	{
-		delegate.addProject(projects);
+		delegate.addProject(project);
 		//return delegate.getProjectList();
 	}
 }

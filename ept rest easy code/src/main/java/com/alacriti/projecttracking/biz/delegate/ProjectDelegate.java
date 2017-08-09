@@ -26,7 +26,7 @@ public class ProjectDelegate extends BaseDelegate {
 
 		return projectList;
 	}
-	public void  addProject(Project projects[]) {
+	public void  addProject(Project project) {
 		boolean rollBack = false;
 		Connection connection = null;
 		ProjectBO sampleBO =null;
@@ -34,7 +34,7 @@ public class ProjectDelegate extends BaseDelegate {
 			connection = startDBTransaction();
 			setConnection(connection);
 			sampleBO = new ProjectBO(connection);
-			sampleBO.addProjects(projects);
+			sampleBO.addProjects(project);
 		} catch (Exception e) {
 			rollBack = true;
 		} finally {

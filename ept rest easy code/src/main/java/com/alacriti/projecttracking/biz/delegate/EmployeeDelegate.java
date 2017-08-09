@@ -25,7 +25,7 @@ public class EmployeeDelegate extends BaseDelegate {
 
 		return employeeList;
 	}
-	public void  addEmployee(Employee employees[]) {
+	public void  addEmployee(Employee employee) {
 		boolean rollBack = false;
 		Connection connection = null;
 		System.out.println("add employee before try block");
@@ -34,7 +34,7 @@ public class EmployeeDelegate extends BaseDelegate {
 			connection = startDBTransaction();
 			setConnection(connection);
 			EmployeeBO sampleBO = new EmployeeBO(connection);
-			sampleBO.addEmployee(employees);
+			sampleBO.addEmployee(employee);
 		} catch (Exception e) {
 			rollBack = true;
 		} finally {

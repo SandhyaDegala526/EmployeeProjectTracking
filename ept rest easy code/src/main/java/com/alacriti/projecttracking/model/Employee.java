@@ -3,14 +3,14 @@ package com.alacriti.projecttracking.model;
 public class Employee {
 	private String employeeId;
 	private String employeeName;
-	private String employeeStatus;
+	private String employeeState;
 	
 
-	public Employee(String employeeId, String employeeName,String employeeStatus) {
+	public Employee(String employeeId, String employeeName,String employeeState) {
 		super();
 		this.employeeId = employeeId;
 		this.employeeName = employeeName;
-		this.employeeStatus = employeeStatus;
+		this.employeeState = employeeState;
 		
 	}
 
@@ -34,12 +34,12 @@ public class Employee {
 		this.employeeName = employeeName;
 	}
 
-	public String getEmployeeStatus() {
-		return employeeStatus;
+	public String getEmployeeState() {
+		return employeeState;
 	}
 
-	public void setEmployeeStatus(String employeeStatus) {
-		this.employeeStatus = employeeStatus;
+	public void setEmployeeStatus(String employeeState) {
+		this.employeeState = employeeState;
 	}
 
 	

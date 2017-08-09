@@ -27,9 +27,9 @@ public class EmployeeResource {
 	@Path("addEmployee")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<Employee> add(Employee employees[])
+	public List<Employee> add(Employee employee)
 	{
-		delegate.addEmployee(employees);
+		delegate.addEmployee(employee);
 		return delegate.getEmployeeList();
 	}
 }

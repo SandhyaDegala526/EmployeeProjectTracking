@@ -33,11 +33,11 @@ public class EmployeeBO extends BaseBO {
 		}
 		return list;
 	}
-	public void addEmployee(Employee employees[]) throws BOException {
+	public void addEmployee(Employee employee) throws BOException {
 		EmployeeDAO accountDAO=null;
 		try {
 			accountDAO = new EmployeeDAO(getConnection());
-			 accountDAO.addEmployee(employees);
+			 accountDAO.addEmployee(employee);
 		} catch (DAOException e) {
 			
 			throw new BOException("DAOException Occured");
