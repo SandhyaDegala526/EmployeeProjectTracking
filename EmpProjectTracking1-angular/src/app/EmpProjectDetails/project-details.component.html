@@ -1,0 +1,22 @@
+<h3>Project Employee Details</h3>
+
+    <div class="pannel-body">
+      <table class="table_class">
+        <tr>
+        <th>EmployeeId</th>
+        <th>ProjectName</th>
+        <th>EmployeeStartDate</th>
+        <th>EmployeeEndDate</th>
+        <th>EmployeeRole</th>
+        </tr>
+        <tr *ngFor='let project of projectDetails'>
+          <td>{{project.employeeId}}</td>
+          <td>{{project.projectName}}</td>
+          <td>{{project.employeeStartDate}}</td>
+          <td>{{project.employeeEndDate}}</td>
+          <td>{{project.employeeRole}}</td>
+        </tr>
+      </table>
+
+    </div>
+

@@ -1,0 +1,34 @@
+<h4>Project Allocation</h4>
+
+<div class="container" >
+  <table>
+    <div>
+      <div >
+        <form [formGroup]="projectAllotmentForm" (ngSubmit)="assignProject()">
+          <div class="form-group">
+            <label>Employee Id</label>
+            <select  class="form-control" formControlName="employeeId" placeholder="Employee Id">
+              <option  *ngFor="let employee of notAssignedEmployees" [value]="employee.employeeId">{{employee.employeeName}}/{{employee.employeeId}}</option></select>
+          </div>
+          <div class="form-group">
+            <label>Project Name</label>
+            <input type="text" class="form-control" formControlName="projectName" placeholder="Project Name">
+          </div>
+          <div class="form-group">
+            <label>Employee StartDate</label>
+            <input type="date" class="form-control" formControlName="employeeStartDate" placeholder="startDate">
+          </div>
+          <div class="form-group">
+            <label>Employee EndDate</label>
+            <input type="date" class="form-control" formControlName="employeeEndDate" placeholder="endDate">
+          </div>
+          <div class="form-group">
+            <label>Employee Role</label>
+            <input type="text" class="form-control" formControlName="employeeRole" placeholder="Employee Role">
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+    </div>
+  </table>
+</div>

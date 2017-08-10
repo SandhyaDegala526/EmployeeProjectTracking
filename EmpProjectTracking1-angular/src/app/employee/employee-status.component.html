@@ -1,0 +1,23 @@
+
+<h4>Check Employee Status</h4>
+
+<div class="container" >
+  <table>
+      <div>
+        <form [formGroup]="empStatusCheckForm" (ngSubmit)="checkEmpstatus()">
+          <div class="form-group">
+            <input type="text" class="form-control" formControlName="employeeId" placeholder="Employee Id">
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+  </table>
+</div>
+<div *ngIf=assigned>
+  <p >Project Assigned already</p>
+</div>
+<div *ngIf=notAssigned>
+
+  <p >Employee is free.Project not assigned.You can assign now</p>
+
+</div>

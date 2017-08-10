@@ -1,0 +1,90 @@
+<h4>Add Employee</h4>
+<div class="container" >
+  <h4>Employee Details</h4>
+  <table>
+    <div>
+      <div>
+      <form [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+       <div class="form-group">
+         <label>Employee Id</label>
+          <input type="text" class="form-control" formControlName="employeeId" placeholder="Employee Id">
+        </div>
+        <div class="form-group">
+          <label>Employee Name</label>
+          <input type="text" class="form-control" formControlName="employeeName" placeholder="Employee Name">
+        </div>
+        <div class="form-group">
+          <label>Employee State</label>
+          <select class="form-control" formControlName="employeeState" placeholder="Employee State">
+            <option value="assigned">assigned</option>
+            <option value="not_assigned">not-assigned</option></select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+    </div>
+  </table>
+</div>
+<!--<ul><li>Employee Id,Employee Name,Employee Status</li></ul>
+<ul *ngFor="let employee of EmployeeDetails">
+  <li> {{employee.employee_id}} , {{employee.employee_name}} , {{employee.employee_state}}</li>
+</ul>-->
+
+
+
+  <!--<h2>Add Employee</h2>
+<div class="container">
+  <form #empform class="formClass" [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+    <div class="form-group">
+      <label>Employee Id</label>
+      <input type="text" #refName class="form-control" formControlName="employeeId"  placeholder="Employee Id">
+      <div *ngIf="employeeForm.controls['name'].hasError('required')" class="alert alert-danger">
+        please enter name
+      </div>
+      <div *ngIf="userForm.controls['EmployeeId'].hasError('maxlength')" class="alert alert-danger" placeholder="Employee Name">
+        Id can't be more than 5 characters
+      </div>
+    <div class="form-group">
+      <label>Employee Name</label>
+      <input type="text" class="form-control" formControlName="employeeName" placeholder="Employee State">
+    </div>
+      <div class="form-group">
+        <label>Employee State</label>
+        <input type="text" class="form-control" formControlName="employeeState"placeholder="Employee State">
+      </div>
+    <div>
+    <button type="submit"  class="btn btn-primary">submit</button>
+    </div>
+    </div>
+  </form>
+</div>-->
+<!--<ul><li>Employee Id,Employee Name,Employee Status</li></ul>
+<ul *ngFor="let employee of EmployeeDetails">
+  <li> {{employee.employee_id}} , {{employee.employee_name}} , {{employee.employee_state}}</li>
+</ul>-->
+
+<!--&gt;<form class="formClass" [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+  &lt;!&ndash;<form #employeeForm="ngForm" (ngSubmit)="addEmployee(employeeForm.value)" >&ndash;&gt;
+    <div class="container">
+      <div class="form-group">
+        <label><b>Employee Id</b></label>
+        <input type="text" class="form-control" ngModel placeholder="Employee Id" name="employeeId" required>
+      </div>
+      <div class="form-group">
+        <label><b>Employee Name</b></label>
+        <input type="text" class="form-control" ngModel placeholder="Employee Name" name="employeeName" required>
+      </div>
+      <div class="form-group">
+        <label><b>Employee State</b></label>
+        <input type="text" class="form-control" ngModel placeholder="Employee State" name="employeeState" required>
+      </div>
+      <div >
+        <button type="reset" >Reset</button>
+        <button type="submit">Submit</button>
+      </div>
+    </div>
+    </form>
+-->
+
+
+
