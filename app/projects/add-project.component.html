@@ -1,0 +1,29 @@
+<div class="col-md-4 col-md-offset-4">
+<div class="container" >
+  <h3>Project Details</h3>
+  <table>
+    <div>
+      <div>
+        <form [formGroup]="projectForm" (ngSubmit)="addProject()">
+          <div class="form-group">
+            <label>Project Name *</label>
+            <input type="text" class="form-control" formControlName="projectName" placeholder="Project Name">
+          </div>
+          <div class="form-group">
+            <label>Start Date *</label>
+            <input type="date" required class="form-control" formControlName="projectStartDate" placeholder="startDate">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="date"  class="form-control" formControlName="projectEndDate" placeholder="endDate">
+          </div>
+          <button type="submit" [disabled]="!projectForm.valid" (click)="getMessage()" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+    </div>
+  </table>
+</div>
+<div *ngIf="flag" class="successmsg">
+  <p>Project added successfully</p>
+</div>
+</div>

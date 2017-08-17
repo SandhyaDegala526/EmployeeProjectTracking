@@ -1,0 +1,55 @@
+<div class="col-md-4 col-md-offset-4">
+<div class="container" >
+  <h3>Project Resources in given dates</h3>
+  <table>
+    <div>
+      <div>
+        <form [formGroup]="projectForm" (ngSubmit)="getDateWiseProject()">
+          <div class="form-group">
+            <label>Project Name</label>
+            <select  class="form-control" formControlName="projectName" placeholder="Project name">
+            <option  *ngFor="let project of projectList"
+                     [value]="project.projectName">{{project.projectName}}</option>
+            <option value="all">All</option></select>
+          </div>
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" class="form-control" formControlName="projectStartDate" placeholder="startDate">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="date" class="form-control" formControlName="projectEndDate" placeholder="endDate">
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="onClick()">Submit</button>
+        </form>
+      </div>
+    </div>
+  </table>
+</div>
+<div >
+<br/>
+  <div class="pannel-body"*ngIf="ProjectNamesFlag">
+    <div >
+    <table class="table_class" >
+      <tr >
+        <th>ProjectName</th>
+        <th>EmployeeNames</th>
+        <th>ProjectStartDate</th>
+        <th>ProjectEndDate</th>
+      </tr>
+      <tr *ngFor="let projects of projectReport">
+        <td>{{projects.project.projectName}}</td>
+        <td ><ul><li *ngFor=" let emp of projects.empList">{{emp.employeeName}}</li></ul></td>
+        <td>{{projects.project.projectStartDate}}</td>
+        <td>{{projects.project.projectEndDate}}</td>
+      </tr>
+    </table>
+  </div>
+  </div>
+</div>
+  <div *ngIf="flag">
+    No projects to display in given dates
+  </div>
+
+</div>
+
