@@ -10,8 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.alacriti.projecttracking.biz.delegate.ProjectDelegate;
-import com.alacriti.projecttracking.model.Project;
-import com.alacriti.projecttracking.model.ProjectEmployeeGroupVO;
+import com.alacriti.projecttracking.model.vo.ProjectVO;
+import com.alacriti.projecttracking.model.vo.ProjectEmployeeGroupVO;
 
 @Path("/project")
 public class ProjectResource {
@@ -19,7 +19,7 @@ public class ProjectResource {
 	@GET
 	@Path("/getProjectList")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Project> getProjectList()
+	public List<ProjectVO> getProjectList()
 	{
 		return  projectDelegate.getProjectList();
 	}
@@ -27,17 +27,17 @@ public class ProjectResource {
 	@Path("/addProject")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void addProject(Project project)
+	public boolean addProject(ProjectVO project)
 	{
-		System.out.println("project before resource");
-		projectDelegate.addProject(project);
-		System.out.println("project after resource");
+		
+		return projectDelegate.addProject(project);
+		
 	}
 	@POST
 	@Path("/getDateWiseProjects")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<ProjectEmployeeGroupVO> getDatewiseProjects(Project project)
+	public List<ProjectEmployeeGroupVO> getDatewiseProjects(ProjectVO project)
 	{
 		return projectDelegate.getDatewiseProjects(project);
 		
@@ -45,7 +45,7 @@ public class ProjectResource {
 	@GET
 	@Path("/getProjectDurations")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Project> getProjectDurations( )
+	public List<ProjectVO> getProjectDurations( )
 	{
 		return projectDelegate.getProjectDurations();
 		

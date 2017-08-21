@@ -7,11 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alacriti.projecttracking.model.Project;
-import com.alacriti.projecttracking.model.ProjectEmployeeGroupVO;
+import org.apache.log4j.Logger;
 
-;
+import com.alacriti.projecttracking.model.vo.ProjectVO;
+import com.alacriti.projecttracking.model.vo.ProjectEmployeeGroupVO;
+
 public class ProjectDAO extends BaseDAO {
+	public static final Logger log = Logger.getLogger(ProjectDAO.class);
 
 	public ProjectDAO() {
 
@@ -21,19 +23,18 @@ public class ProjectDAO extends BaseDAO {
 		super(conn);
 	}
 
-	public List<Project> getProjectList() throws DAOException {
+	public List<ProjectVO> getProjectList() throws DAOException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<Project> list = null;
+		List<ProjectVO> list = null;
 		try {
-			list = new ArrayList<Project>();
+			list = new ArrayList<ProjectVO>();
 
-			String sqlCmd = "select project_name,project_start_date,project_end_date from sandhyad_ept_project_details";
+			String sqlCmd = "select project_id,project_name from sandhyad_ept_project_details";
 			stmt = getPreparedStatement(getConnection(), sqlCmd);
 			rs = executeQuery(stmt);
 			while (rs.next()) {
-				list.add(new Project(rs.getString(1), rs
-						.getDate(2), rs.getDate(3)));
+				list.add(new ProjectVO(rs.getInt(1), rs.getString(2)));
 			}
 		} catch (SQLException e) {
 
@@ -48,79 +49,87 @@ public class ProjectDAO extends BaseDAO {
 
 	}
 
-	public void addProject(Project project) throws DAOException {
+	public boolean addProject(ProjectVO project) throws DAOException {
 		PreparedStatement stmt = null;
-
+		boolean flag = false;
+		int rowCount;
 		try {
-
-			String sqlCmd = "insert into sandhyad_ept_project_details "
-					+ "(project_id,project_name,project_start_date,project_end_date) values (?,?,?,?)";
-			stmt = getPreparedStatement(getConnection(), sqlCmd);
-			stmt.setInt(1, project.getProjectId());
-			stmt.setString(2, project.getProjectName());
-			stmt.setDate(3, project.getProjectStartDate());
-			stmt.setDate(4, project.getProjectEndDate());
-			stmt.executeUpdate();
+			if (project.getProjectEndDate() != null) {
+				String sqlCmd = "insert into sandhyad_ept_project_details "
+						+ "(project_name,project_start_date,project_end_date) values (?,?,?)";
+				stmt = getPreparedStatement(getConnection(), sqlCmd);
+				stmt.setString(1, project.getProjectName());
+				stmt.setDate(2, project.getProjectStartDate());
+				stmt.setDate(3, project.getProjectEndDate());
+				rowCount = stmt.executeUpdate();
+				if (rowCount > 0) {
+					flag = true;
+				}
+			} else {
+				String sqlCmd = "insert into sandhyad_ept_project_details "
+						+ "(project_name,project_start_date) values (?,?)";
+				stmt = getPreparedStatement(getConnection(), sqlCmd);
+				stmt.setString(1, project.getProjectName());
+				stmt.setDate(2, project.getProjectStartDate());
+				rowCount = stmt.executeUpdate();
+				if (rowCount > 0) {
+					flag = true;
+				}
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();			
+			e.printStackTrace();
 			throw new DAOException("Exception in ProjectDAO addProjects()");
 		} finally {
 
 			close(stmt);
 		}
+		return flag;
 	}
 
-	public List<ProjectEmployeeGroupVO> getDatewiseProjects(Project project)
+	public List<ProjectEmployeeGroupVO> getDatewiseProjects(ProjectVO project)
 			throws DAOException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<ProjectEmployeeGroupVO> projectList = null;
 		try {
-			System.out.println("DAO");
 			projectList = new ArrayList<ProjectEmployeeGroupVO>();
 			if (project.getProjectName().equals("all")) {
-				String sqlCmd = " select proj.project_name,group_concat(emp_proj.employee_name),"
-						+ " proj.project_start_date,proj.project_end_date "
-						+ " from sandhyad_ept_project_details proj inner join sandhyad_ept_project_allocation emp_proj "
-						+ " on  proj.project_name=emp_proj.project_name "
-						+ " where project_start_date>=? AND project_end_date<=? "
-						+ " group by proj.project_name";
+				String sqlCmd = "select p.project_name,group_concat(e.employee_name),p.project_start_date,p.project_end_date "
+						+ " from sandhyad_ept_project_allocation a ,sandhyad_ept_project_details p,sandhyad_ept_employee_details e"
+						+ " where  a.project_id=p.project_id "
+						+ " AND a.employee_id=e.employee_id "
+						+ " and  project_start_date>=?"
+						+ " AND project_end_date<=?"
+						+ " group by p.project_name";
 
 				stmt = getPreparedStatement(getConnection(), sqlCmd);
-				System.out.println("DAO 3");
 				stmt.setDate(1, project.getProjectStartDate());
 				stmt.setDate(2, project.getProjectEndDate());
 				rs = executeQuery(stmt);
-				System.out.println("DAO 4");
-
 			} else {
-				String sqlCmd = "select proj.project_name,group_concat(emp_proj.employee_name),"
-						+ "proj.project_start_date,proj.project_end_date "
-						+ "from sandhyad_ept_project_details proj inner join sandhyad_ept_project_allocation emp_proj "
-						+ "on  proj.project_name=emp_proj.project_name "
-						+ "where project_start_date>=? AND project_end_date<=?  AND proj.project_name=?"
-						+ " group by proj.project_name";
+				String sqlCmd = "select p.project_name,group_concat(e.employee_name),p.project_start_date,p.project_end_date "
+						+ " from sandhyad_ept_project_allocation a ,sandhyad_ept_project_details p,sandhyad_ept_employee_details e"
+						+ " where  a.project_id=p.project_id "
+						+ " AND a.employee_id=e.employee_id "
+						+ " and  project_start_date>=?"
+						+ " AND project_end_date<=?"
+						+ " AND p.project_name=?"
+						+ " group by p.project_name";
+
 				stmt = getPreparedStatement(getConnection(), sqlCmd);
-				System.out.println("DAO 1");
 				stmt.setDate(1, project.getProjectStartDate());
 				stmt.setDate(2, project.getProjectEndDate());
 				stmt.setString(3, project.getProjectName());
 				rs = executeQuery(stmt);
-				System.out.println("DAO 2");
-
 			}
 			while (rs.next()) {
 
 				ProjectEmployeeGroupVO employeeGroupVO = new ProjectEmployeeGroupVO();
 
-				Project projectDAO = new Project();
-				projectDAO.setProjectName(rs.getString(1));
-				projectDAO.setProjectStartDate(rs.getDate(3));
-				projectDAO.setProjectEndDate(rs.getDate(4));
-				employeeGroupVO.setProject(projectDAO);
+				ProjectVO projectvo = new ProjectVO(rs.getString(1),rs.getDate(3),rs.getDate(4));
+				employeeGroupVO.setProject(projectvo);
 				employeeGroupVO.setEmpList(rs.getString(2));
-				System.out.println(employeeGroupVO.getEmpList());
 
 				projectList.add(employeeGroupVO);
 				System.out.println("DAO 3");
@@ -138,25 +147,24 @@ public class ProjectDAO extends BaseDAO {
 
 	}
 
-	public List<Project> getProjectDurations() throws DAOException {
+	public List<ProjectVO> getProjectDurations() throws DAOException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<Project> projectList = null;
+		List<ProjectVO> projectList = null;
 		try {
-			System.out.println("DAO");
-			projectList = new ArrayList<Project>();
+			projectList = new ArrayList<ProjectVO>();
 
-			String sqlCmd = "select project_name,project_start_date,project_end_date from sandhyad_ept_project_details";
+			String sqlCmd = "select project_name,project_start_date,project_end_date from "
+					+ "sandhyad_ept_project_details order by project_name";
 
 			stmt = getPreparedStatement(getConnection(), sqlCmd);
-			System.out.println("DAO 1");
 			rs = executeQuery(stmt);
-			System.out.println("DAO 2");
 			while (rs.next()) {
-				Project project=new Project();
-				project.setProjectName(rs.getString("project_name"));
+				ProjectVO project = new ProjectVO(rs.getString("project_name")
+						,rs.getDate("project_start_date"),rs.getDate("project_end_date"));
+			/*	project.setProjectName(rs.getString("project_name"));
 				project.setProjectStartDate(rs.getDate("project_start_date"));
-				project.setProjectEndDate(rs.getDate("project_end_date"));
+				project.setProjectEndDate(rs.getDate("project_end_date"));*/
 				projectList.add(project);
 			}
 		} catch (SQLException e) {

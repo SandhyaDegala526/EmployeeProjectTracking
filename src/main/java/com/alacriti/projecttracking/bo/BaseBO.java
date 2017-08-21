@@ -2,9 +2,6 @@ package com.alacriti.projecttracking.bo;
 
 import java.sql.Connection;
 
-
-
-
 public class BaseBO {
 	private Connection conn = null;
 

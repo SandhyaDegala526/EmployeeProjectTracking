@@ -1,5 +1,6 @@
 package com.alacriti.projecttracking.util;
 
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -10,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.alacriti.projecttracking.constants.Constants;
-
 
 
 public class StringUtil {
@@ -142,6 +142,7 @@ public class StringUtil {
 	}
 
 	public static String[] split(String element) {
+		
 
 		if (element != null && !element.isEmpty() && element.contains("/")) {
 			return element.split("/");
@@ -151,7 +152,6 @@ public class StringUtil {
 	}
 
 	public static String[] split(String src, String token) {
-		// log.logInfo("element : " + src);
 
 		if (src != null && !src.isEmpty()) {
 			return src.split(token);
@@ -227,7 +227,6 @@ public class StringUtil {
 	}
 
 	public static String retrieveTextBetweenAngularBraces(String text) {
-		
 		int startingIndex = text.indexOf("<");
 		if (startingIndex != -1) {
 			int endingIndex = text.indexOf(">", startingIndex);

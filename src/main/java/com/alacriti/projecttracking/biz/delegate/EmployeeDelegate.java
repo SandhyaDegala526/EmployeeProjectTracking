@@ -3,22 +3,28 @@ package com.alacriti.projecttracking.biz.delegate;
 import java.sql.Connection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.alacriti.projecttracking.bo.EmployeeBO;
-import com.alacriti.projecttracking.model.Employee;
+import com.alacriti.projecttracking.model.vo.EmployeeVO;
 
 public class EmployeeDelegate extends BaseDelegate {
+	public static final Logger log = Logger.getLogger(EmployeeDelegate.class);
 
-	public List<Employee>  getEmployeeList() {
+	public List<EmployeeVO> getEmployeeList() {
 		boolean rollBack = false;
 		Connection connection = null;
-		EmployeeBO employeeBO =null;
-		List<Employee> employeeList = null;
+		EmployeeBO employeeBO = null;
+		List<EmployeeVO> employeeList = null;
 		try {
+			log.debug("in EmployeeDelegate.getEmployeeList");
 			connection = startDBTransaction();
 			setConnection(connection);
-			 employeeBO = new EmployeeBO(connection);
-			employeeList= employeeBO.getEmployeeList();
+			employeeBO = new EmployeeBO(connection);
+			employeeList = employeeBO.getEmployeeList();
 		} catch (Exception e) {
+			log.error("exception in EmployeeDelegate.getEmployeeList"
+					+ e.getMessage());
 			e.printStackTrace();
 			rollBack = true;
 		} finally {
@@ -27,34 +33,42 @@ public class EmployeeDelegate extends BaseDelegate {
 
 		return employeeList;
 	}
-	public void  addEmployee(Employee employee) {
+
+	public String addEmployee(EmployeeVO employee) {
+		log.debug("in EmployeeDelegate.addEmployee");
 		boolean rollBack = false;
 		Connection connection = null;
+		EmployeeBO employeeBO;
+		String status = "fail";
 		try {
 			connection = startDBTransaction();
 			setConnection(connection);
-			EmployeeBO sampleBO = new EmployeeBO(connection);
-			sampleBO.addEmployee(employee);
+			employeeBO = new EmployeeBO(connection);
+			status = employeeBO.addEmployee(employee);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("exception in EmployeeDelegate.addEmployee"
+					+ e.getMessage());
 			rollBack = true;
 		} finally {
 			endDBTransaction(connection, rollBack);
 		}
+		return status;
 
 	}
 
-	public List<Employee>  getNotAssignedEmployees() {
+	public List<EmployeeVO> getUnAssignedEmployees() {
+		log.debug("EmployeeDelegate.getUnAssignedEmployees start()");
 		boolean rollBack = false;
 		Connection connection = null;
-		List<Employee> list = null;
+		List<EmployeeVO> list = null;
 		try {
 			connection = startDBTransaction();
 			setConnection(connection);
 			EmployeeBO sampleBO = new EmployeeBO(connection);
-			list= sampleBO.getNotAssignedEmployees();
+			list = sampleBO.getUnAssignedEmployees();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("exception in EmployeeDelegate.getNotAssignedEmployees"
+					+ e.getMessage());
 			rollBack = true;
 		} finally {
 			endDBTransaction(connection, rollBack);
@@ -62,7 +76,5 @@ public class EmployeeDelegate extends BaseDelegate {
 
 		return list;
 	}
-	
-
 
 }

@@ -1,14 +1,12 @@
 package com.alacriti.projecttracking.util;
 
 
-
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 import com.alacriti.projecttracking.constants.Constants;
-
 
 
 public class NumberUtils {
@@ -88,7 +86,6 @@ public class NumberUtils {
 	}
 
 	public static BigDecimal getPercentageBigDecimal(boolean indicator, long integerVal, long decimalVal) {
-	
 		BigDecimal integerValDecimal = new BigDecimal(integerVal);
 		BigDecimal decimalValDecimal = new BigDecimal(decimalVal);
 		decimalValDecimal = decimalValDecimal.movePointLeft(decimalValDecimal.precision());
@@ -101,42 +98,35 @@ public class NumberUtils {
 	}
 
 	public static BigDecimal getPercentageBigDecimal(boolean indicator, String integerVal, String decimalVal) {
-		
 		BigDecimal bigDecimal = new BigDecimal((indicator ? "+" : "-") + integerVal + "." + decimalVal);
 		return bigDecimal;
 	}
 
 	public static boolean isNumeric(String s) {
-		
 		return Pattern.matches("[0-9]+", s);
 	}
 
 	public static boolean isDecimal(String str) {
-		
 		try {
-			double d = Double.parseDouble(str);
+			 Double.parseDouble(str);
 		} catch (NumberFormatException e) {
-			
 			return false;
 		}
 		return true;
 	}
 
 	public static BigDecimal getBigdecimal(String stringNumber) {
-		
 		try {
 			stringNumber = stringNumber.trim();
 			BigDecimal money = new BigDecimal(stringNumber.replaceAll(",", ""));
 			return money;
 		} catch (NumberFormatException e) {
-			
 			return new BigDecimal("0.00");
 		}
 
 	}
 
 	public static boolean isLong(String str) {
-		
 		if (str == null) {
 			return false;
 		}
@@ -150,14 +140,12 @@ public class NumberUtils {
 	}
 
 	public static BigDecimal getBigDecimalUptoTwoDecimalPlaces(BigDecimal num) {
-		
 
 		return num.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
 	}
 
 	public static int randInt(int min, int max) {
-		
 		Random rand = new Random();
 
 		int randomNum = rand.nextInt((max - min) + 1) + min;
@@ -165,14 +153,12 @@ public class NumberUtils {
 	}
 
 	public static String amountFormatUSD(String d) {
-		
 
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		return formatter.format(d) + "";
 	}
 
 	public static String amountFormatUSDForMail(BigDecimal amt) {
-		
 		return NumberFormat.getCurrencyInstance().format(amt);
 	}
 

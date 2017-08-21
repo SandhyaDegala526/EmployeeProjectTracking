@@ -7,10 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alacriti.projecttracking.model.Employee;
+import org.apache.log4j.Logger;
 
+import com.alacriti.projecttracking.model.vo.EmployeeVO;
+import static com.alacriti.projecttracking.constants.DataBaseConstants.EMPLOYEE_STATUS_NOT_ASSIGNED;
 
 public class EmployeeDAO extends BaseDAO {
+	public static final Logger log = Logger.getLogger(EmployeeDAO.class);
+
+	
 
 	public EmployeeDAO() {
 
@@ -19,22 +24,26 @@ public class EmployeeDAO extends BaseDAO {
 	public EmployeeDAO(Connection conn) {
 		super(conn);
 	}
-	public List<Employee> getEmployeeList() throws DAOException{
+
+	public List<EmployeeVO> getEmployeeList() throws DAOException {
+		log.debug("in EmployeeDAO.getEmployeeList");
+
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<Employee> list = null;
+		List<EmployeeVO> list = null;
 		try {
-			list = new ArrayList<Employee>();
-			String sqlCmd = "select employee_id,employee_name,employee_state from sandhyad_ept_employee_details;";
-			stmt =getPreparedStatement(getConnection(), sqlCmd);
-			rs=executeQuery(stmt);
+			list = new ArrayList<EmployeeVO>();
+			String sqlCmd = "select employee_id,employee_name,empstatus_id from sandhyad_ept_employee_details;";
+			stmt = getPreparedStatement(getConnection(), sqlCmd);
+			rs = executeQuery(stmt);
 			while (rs.next()) {
-				list.add(new Employee(rs.getString(1), rs
-						.getString(2), rs.getString(3)));
+				list.add(new EmployeeVO(rs.getString(1), rs.getString(2), rs
+						.getInt(3)));
 			}
 		} catch (SQLException e) {
 
-			e.printStackTrace();
+			log.error("SQLException in EmployeeDAO.getEmployeeList"
+					+ e.getMessage());
 			throw new DAOException("Exception in getEmployee in Employee");
 
 		} finally {
@@ -44,59 +53,64 @@ public class EmployeeDAO extends BaseDAO {
 		return list;
 
 	}
-	public void addEmployee(Employee employee) throws DAOException{
-		
-		PreparedStatement stmt=null;
-		
-		try{
-			String sqlCmd="insert into sandhyad_ept_employee_details(employee_id,employee_name,employee_state) values(?,?,?)";
-			stmt =getPreparedStatement(getConnection(), sqlCmd);
-		    	 stmt.setString(1,employee.getEmployeeId());
-		    	 stmt.setString(2, employee.getEmployeeName());
-		    	 stmt.setString(3, employee.getEmployeeState());
-		    	 stmt.executeUpdate();
-		  
-			}catch(SQLException e){
-				e.printStackTrace();
+
+	public String addEmployee(EmployeeVO employee) throws DAOException {
+		log.debug("in EmployeeDAO.addEmployee");
+
+		PreparedStatement stmt = null;
+		int rowNumber;
+		String status = "fail";
+		try {
+
+			String sqlCmdinsert = "insert into sandhyad_ept_employee_details(employee_id,employee_name,empstatus_id) values(?,?,?)";
+			stmt = getPreparedStatement(getConnection(), sqlCmdinsert);
+			stmt.setString(1, employee.getEmployeeId());
+			stmt.setString(2, employee.getEmployeeName());
+			stmt.setInt(3, employee.getEmployeeState());
+			rowNumber = stmt.executeUpdate();
+			if (rowNumber >= 1) {
+				status = "success";
+			}
+
+		} catch (SQLException e) {
+			log.error("exception in EmployeeDAO.addEmployee" + e.getMessage());
 			throw new DAOException("Exception in addEmployee in Employee");
 
-		}
-		finally {
+		} finally {
 			close(stmt);
 		}
-}
-	public List<Employee> getNotAssignedEmployees()throws DAOException
-	{
+		return status;
+	}
+
+	public List<EmployeeVO> getNotAssignedEmployees() throws DAOException {
+		log.debug("in EmployeeDAO.getNotAssignedEmployees");
+
 		PreparedStatement stmt = null;
-		ResultSet rs=null;
-		List<Employee> list=null;
+		ResultSet rs = null;
+		List<EmployeeVO> list = null;
 		try {
-			list=new ArrayList<Employee>();
-		System.out.println("DAO 1");
-			String sqlCmd="select employee_id,employee_name from sandhyad_ept_employee_details where employee_state='not-assigned'";
-			stmt=getPreparedStatement(getConnection(), sqlCmd);
-			System.out.println("DAO 2");
-			rs=executeQuery(stmt);
-			while(rs.next())
-			{
-				list.add(new Employee(rs.getString(1), rs
-						.getString(2)));
-			
+			list = new ArrayList<EmployeeVO>();
+			String sqlCmd = "select employee_id,employee_name from sandhyad_ept_employee_details"
+					+ " where empstatus_id=?";
+			stmt = getPreparedStatement(getConnection(), sqlCmd);
+			stmt.setInt(1,EMPLOYEE_STATUS_NOT_ASSIGNED );
+			rs = executeQuery(stmt);
+			while (rs.next()) {
+				list.add(new EmployeeVO(rs.getString(1), rs.getString(2)));
+
 			}
-			
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
+
+		} catch (SQLException e) {
+			log.error("exception in EmployeeDAO.getNotAssignedEmployees"
+					+ e.getMessage());
 			throw new DAOException("Exception in ProjectDAO getProjects()");
-			
 
 		} finally {
 
-			close(stmt , rs);
+			close(stmt, rs);
 		}
 		return list;
-		
+
 	}
-	
 
 }

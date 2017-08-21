@@ -1,6 +1,5 @@
 package com.alacriti.projecttracking.dao;
 
-
 import com.alacriti.projecttracking.exception.BaseException;
 
 public class DAOException extends BaseException {
@@ -18,11 +17,17 @@ public class DAOException extends BaseException {
 
 	public DAOException(String msg, Throwable th) {
 
-		this(msg, th, com.alacriti.projecttracking.constants.ErrorConstants.ERR_GENERIC_DAO);
+		this(
+				msg,
+				th,
+				com.alacriti.projecttracking.constants.ErrorConstants.ERR_GENERIC_DAO);
 	}
 
 	public DAOException(Throwable th) {
-		this(null, th, com.alacriti.projecttracking.constants.ErrorConstants.ERR_GENERIC_DAO);
+		this(
+				null,
+				th,
+				com.alacriti.projecttracking.constants.ErrorConstants.ERR_GENERIC_DAO);
 	}
 
 	public DAOException(String msg, String errorCode) {
@@ -30,6 +35,9 @@ public class DAOException extends BaseException {
 	}
 
 	public DAOException(String msg) {
-		this(msg, null, com.alacriti.projecttracking.constants.ErrorConstants.ERR_GENERIC_DAO);
+		this(
+				msg,
+				null,
+				com.alacriti.projecttracking.constants.ErrorConstants.ERR_GENERIC_DAO);
 	}
 }

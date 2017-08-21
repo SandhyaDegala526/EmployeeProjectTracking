@@ -10,10 +10,10 @@ public final class Constants {
 	public static final String FREEMARKER_TEMPLATE_INIT_PARAM_NAME = "template-path";
 	public static final String CONFIG_FILE_INIT_PARAM_NAME = "config-file-path";
 	public static final String KEYSTORE_PATH = "keystore_path";
-	/*
-	 * Time mentioned in hh:mm:ss format.
-	 * 1:00 refers to hour.
-	 */
+	
+	/* * Time mentioned in hh:mm:ss format.
+	 * 1:00 refers to hour.*/
+	 
 	public static final String TOKEN_EXPIRY_DURATION_IN_SEC = "1:00";	
 	public static final String REJECT_FORM_TEMPLATE = "rejectForm.ftl";
 	public static final String NA_STRING = "N/A";

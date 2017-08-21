@@ -6,10 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 public class BaseDAO {
-	public Long auditEventTransactiondId;
-	public int auditEventId;
+
 	private Connection conn;
 
 	public BaseDAO() {
@@ -34,7 +32,7 @@ public class BaseDAO {
 			try {
 				rs.close();
 			} catch (Exception e) {
-				System.out.println("Exception in close " +  e);
+				System.out.println("Exception in close " + e);
 			}
 		}
 	}
@@ -44,7 +42,7 @@ public class BaseDAO {
 			try {
 				stmt.close();
 			} catch (Exception e) {
-				System.out.println("Exception in close " +  e);
+				System.out.println("Exception in close " + e);
 			}
 		}
 	}
@@ -55,36 +53,38 @@ public class BaseDAO {
 
 	}
 
-	protected PreparedStatement getPreparedStatement(Connection connection, String sqlCmd) throws SQLException {
-
+	protected PreparedStatement getPreparedStatement(Connection connection,
+			String sqlCmd) throws SQLException {
 
 		try {
-
 			return connection.prepareStatement(sqlCmd);
 		} catch (SQLException e) {
-			System.out.println("SQLException in getPreparedStatement " +  e);
+			System.out.println("SQLException in getPreparedStatement " + e);
 			throw e;
 		}
 	}
 
-	protected PreparedStatement getPreparedStatementReturnPK(Connection connection, String sqlCmd) throws SQLException {
+	protected PreparedStatement getPreparedStatementReturnPK(
+			Connection connection, String sqlCmd) throws SQLException {
 
 		try {
 
-			return connection.prepareStatement(sqlCmd, Statement.RETURN_GENERATED_KEYS);
+			return connection.prepareStatement(sqlCmd,
+					Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
-			System.out.println("Exception in getPreparedStatementReturnPK " +  e);
+			System.out
+					.println("Exception in getPreparedStatementReturnPK " + e);
 			throw e;
 		}
 	}
 
 	protected ResultSet executeQuery(PreparedStatement ps) throws SQLException {
-
+		ResultSet rs = null;
 		try {
-
-			return ps.executeQuery();
+			rs = ps.executeQuery();
+			return rs;
 		} catch (SQLException e) {
-			System.out.println("SQLException in executeQuery " +  e);
+			System.out.println("SQLException in executeQuery " + e);
 			throw e;
 		}
 	}
@@ -95,12 +95,11 @@ public class BaseDAO {
 
 			return ps.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("SQLException in executeUpdate " +  e);
+			System.out.println("SQLException in executeUpdate " + e);
 			throw e;
 		} finally {
 			close(ps);
 		}
 	}
 
-		
 }

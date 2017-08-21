@@ -5,10 +5,8 @@ import java.sql.SQLException;
 
 import com.alacriti.projecttracking.datasource.MySqlDataSource;
 
-
 public class BaseDelegate {
 
-	
 	private Connection connection;
 
 	public void setConnection(Connection _connection) {
@@ -16,43 +14,43 @@ public class BaseDelegate {
 	}
 
 	public Connection getConnection() {
-		
+
 		return connection;
 	}
 
 	protected void endDBTransaction(Connection connection) {
-		
+
 		try {
 			connection.commit();
 
 		} catch (SQLException e) {
-			
+
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				
+
 			}
 		} catch (Exception e) {
-			
+
 		} finally {
 			try {
 				if (connection != null)
 					connection.close();
 			} catch (SQLException e) {
-				
+
 			}
 		}
 
 	}
 
 	protected void endDBTransaction(Connection connection, boolean isRollback) {
-		
+
 		if (isRollback) {
 			try {
 				connection.rollback();
-				
+
 			} catch (SQLException e) {
-				
+
 			}
 
 			finally {
@@ -60,7 +58,7 @@ public class BaseDelegate {
 					if (connection != null)
 						connection.close();
 				} catch (SQLException e) {
-					
+
 				}
 			}
 		} else {
@@ -70,7 +68,7 @@ public class BaseDelegate {
 	}
 
 	protected Connection startDBTransaction() {
-		
+
 		Connection conn = null;
 		try {
 			if (conn == null || conn.isClosed())
@@ -78,7 +76,7 @@ public class BaseDelegate {
 
 			conn.setAutoCommit(false);
 		} catch (SQLException e) {
-			
+
 		}
 		return conn;
 

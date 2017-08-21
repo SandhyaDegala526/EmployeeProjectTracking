@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 
 import com.alacriti.projecttracking.util.ExceptionUtil;
 
-
 public final class MySqlDataSource {
 
 	private static MySqlDataSource ms_this = null;
@@ -42,17 +41,20 @@ public final class MySqlDataSource {
 	protected void initialize() {
 		try {
 			if (dbSource == null) {
-				System.out.println("DataSource  looking up URL " + "java:jboss/datasources/TRAINEE");
-				InitialContext aInitialContext = new InitialContext();
-				dbSource = (DataSource) aInitialContext.lookup("java:jboss/datasources/TRAINEE");
-
-				System.out.println("DataSource dbSource was null and was successfully setup by looking up URL "
+				System.out.println("DataSource  looking up URL "
 						+ "java:jboss/datasources/TRAINEE");
+				InitialContext aInitialContext = new InitialContext();
+				dbSource = (DataSource) aInitialContext
+						.lookup("java:jboss/datasources/TRAINEE");
+
+				System.out
+						.println("DataSource dbSource was null and was successfully setup by looking up URL "
+								+ "java:jboss/datasources/TRAINEE");
 			}
 		} catch (NamingException e) {
 			System.out.println("NamingException in initialize " + e);
 		} catch (Exception e) {
-			System.out.println("Exception in initialize " +  e);
+			System.out.println("Exception in initialize " + e);
 		}
 	}
 
@@ -62,7 +64,7 @@ public final class MySqlDataSource {
 			dbCon.setAutoCommit(false);
 			return dbCon;
 		} catch (Exception e) {
-			System.out.println("Exception in getConnection " +  e);
+			System.out.println("Exception in getConnection " + e);
 		}
 		return null;
 	}
@@ -88,27 +90,31 @@ public final class MySqlDataSource {
 			this.id = id;
 		}
 
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(Object proxy, Method method, Object[] args)
+				throws Throwable {
 			try {
 				if (method.getName().equalsIgnoreCase("close")) {
 					synchronized (connLeakVarlock) {
 						totalClosedConnCnt--;
 						connOpenedNow--;
 						openConnIdMap.remove(this.getId());
-						String localStackTrace = ExceptionUtil
-								.getStackTrace(new Exception("No Problem in this exception.")).replaceAll("\\n", "");
+						String localStackTrace = ExceptionUtil.getStackTrace(
+								new Exception("No Problem in this exception."))
+								.replaceAll("\\n", "");
 						if (localStackTrace.length() > 500) {
 							localStackTrace = localStackTrace.substring(0, 499);
 						}
-						System.out.println("::Connection returned:" + totalOpenConnCnt + "::" + (-totalClosedConnCnt) + ">"
-								+ connOpenedNow + ":\n" + localStackTrace);
+						System.out.println("::Connection returned:"
+								+ totalOpenConnCnt + "::"
+								+ (-totalClosedConnCnt) + ">" + connOpenedNow
+								+ ":\n" + localStackTrace);
 
 					}
 				}
 				return method.invoke(conn, args);
 			} catch (InvocationTargetException e) {
 
-				System.out.println("InvocationTargetException in invoke " +  e);
+				System.out.println("InvocationTargetException in invoke " + e);
 
 				throw e.getTargetException();
 			}
@@ -123,12 +129,11 @@ public final class MySqlDataSource {
 
 		if (openConnIdMap.size() > 0) {
 			for (Map.Entry<String, String> entry : openConnIdMap.entrySet()) {
-				System.out.println(
-						"No Problem in this exception. ConnId:" + entry.getKey() + " :: Trace :" + entry.getValue());
+				System.out.println("No Problem in this exception. ConnId:"
+						+ entry.getKey() + " :: Trace :" + entry.getValue());
 			}
 		}
 		System.out.println("printConnectionLeakTrace(): End");
 
 	}
 }
-

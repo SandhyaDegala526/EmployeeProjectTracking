@@ -1,0 +1,48 @@
+<div class="col-md-4 col-md-offset-4">
+<div class="container" >
+  <h3>Project Details</h3>
+  <table>
+    <div>
+      <div>
+        <form #projectForm="ngForm" (ngSubmit)="addProject(projectForm.value)">
+          <div class="form-group">
+            <label>Project Name </label>
+            <input type="text" #nameRef="ngModel"  class="form-control"
+                   value="projectName" name="projectName"  placeholder="Project Name" ngModel required >
+            <div *ngIf="nameRef.errors && (nameRef.dirty || nameRef.touched)" class="alert alert-danger">
+              <div [hidden]="!nameRef.errors.required">
+                please enter name
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" #startDateRef="ngModel"  class="form-control"
+                   value="projectStartDate" name="projectStartDate"  placeholder="start date" ngModel required >
+            <div *ngIf="startDateRef.errors && (startDateRef.dirty || startDateRef.touched)" class="alert alert-danger">
+              <div [hidden]="!startDateRef.errors.required">
+                please enter start date
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="date"  class="form-control"
+                   value="projectEndDate" name="projectEndDate"  placeholder="end date" ngModel  >
+                 </div>
+          <button type="submit"  class="btn btn-primary">Add</button>
+        </form>
+      </div>
+    </div>
+  </table>
+</div>
+<div *ngIf="successFlag"class="alert alert-success alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+  <p>Project added successfully</p>
+</div>
+  <div *ngIf="failureFlag" class="alert alert-warning alert-dismissable">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+    <p>Project not added</p>
+  </div>
+
+</div>

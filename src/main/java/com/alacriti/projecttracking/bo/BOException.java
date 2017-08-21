@@ -3,8 +3,9 @@ package com.alacriti.projecttracking.bo;
 import com.alacriti.projecttracking.constants.ErrorConstants;
 import com.alacriti.projecttracking.exception.BaseException;
 
-
 public class BOException extends BaseException {
+
+	private static final long serialVersionUID = 1L;
 
 	public BOException() {
 	}
