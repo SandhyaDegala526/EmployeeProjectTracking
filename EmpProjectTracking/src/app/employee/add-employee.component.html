@@ -1,0 +1,59 @@
+<div class="col-md-4 col-md-offset-4">
+<div class="container" >
+
+  <h3>Employee Details</h3>
+  <table>
+    <div>
+      <div>
+        <form #employeeForm="ngForm" (ngSubmit)="addEmployee(employeeForm.value)" >
+        <div class="form-group">
+        <label>Employee Id</label>
+        <input type="text" #nameRef="ngModel"  class="form-control"
+                value="employeeId" name="employeeId"  placeholder="Employee Id" ngModel required >
+          <div *ngIf="nameRef.errors && (nameRef.dirty || nameRef.touched)" class="alert alert-danger">
+            <div [hidden]="!nameRef.errors.required">
+              please enter id
+            </div>
+          </div>
+          </div>
+          <div class="form-group">
+            <label>Employee Name</label>
+            <input type="text" #idRef="ngModel"  class="form-control"
+                   value="employeeName" name="employeeName" placeholder="Employee Name" ngModel required >
+            <div *ngIf="idRef.errors && (idRef.dirty || idRef.touched)" class="alert alert-danger">
+              <div [hidden]="!idRef.errors.required">
+                please enter name
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Employee State </label>
+            <select  #stateRef="ngModel" class="form-control"   name="employeeState" ngModel required  >
+              <div *ngIf="stateRef.errors && (stateRef.dirty || stateRef.touched)" class="alert alert-danger">
+                <div [hidden]="!stateRef.errors.required">
+                  please enter employee state
+                </div>
+              </div>
+              <option value=0>not-assigned</option>
+            <option value=1>assigned</option></select>
+          </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+    </div>
+  </table>
+</div>
+<div *ngIf="sucessFlag"  class="alert alert-success alert-dismissable alert-position">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+  <p>Employee details added successfully</p>
+</div>
+  <div *ngIf="duplicateFlag" class="alert alert-warning alert-dismissable alert-position">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+    <p>Employee ID already exist</p>
+  </div>
+  <div *ngIf="failFlag" class="alert alert-warning alert-dismissable alert-position">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+    <p>Employee details not added</p>
+  </div>
+</div>
+

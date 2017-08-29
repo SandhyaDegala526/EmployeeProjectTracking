@@ -9,10 +9,10 @@ import com.alacriti.projecttracking.bo.ProjectAllocationBO;
 import com.alacriti.projecttracking.model.vo.ProjectAllocationVO;
 
 public class ProjectAllocationDelegate extends BaseDelegate {
-	public static final Logger log = Logger.getLogger(LoginDelegate.class);
+	public static final Logger log = Logger.getLogger(ProjectAllocationDelegate.class);
 
 	public List<ProjectAllocationVO> getProjectAllocationList() {
-		log.debug("in LoginDelegate.verify");
+		log.debug("ProjectAllocationDelegate.getProjectAllocationList start");
 		boolean rollBack = false;
 		Connection connection = null;
 		ProjectAllocationBO projectAllocationBO = null;
@@ -24,7 +24,7 @@ public class ProjectAllocationDelegate extends BaseDelegate {
 			projetAllotmentList = projectAllocationBO
 					.getProjectAllocationList();
 		} catch (Exception e) {
-			log.error("exception in LoginDelegate.verify" + e.getMessage());
+			log.error("exception in ProjectAllocationDelegate.getProjectAllocationList" + e.getMessage());
 
 			rollBack = true;
 		} finally {
@@ -34,26 +34,26 @@ public class ProjectAllocationDelegate extends BaseDelegate {
 		return projetAllotmentList;
 	}
 
-	public boolean projectAllotment(ProjectAllocationVO projectAllocationVO) {
-		log.debug("in LoginDelegate.verify");
+	public String projectAllotment(ProjectAllocationVO projectAllocationVO) {
+		log.debug(" ProjectAllocationDelegate.projectAllotment start");
 
 		boolean rollBack = false;
 		Connection connection = null;
 		ProjectAllocationBO projectAllocationBO = null;
-		boolean flag = false;
+	String status="fail";
 		try {
 			connection = startDBTransaction();
 			setConnection(connection);
 			projectAllocationBO = new ProjectAllocationBO(connection);
-			flag = projectAllocationBO.projectAllotment(projectAllocationVO);
+			status = projectAllocationBO.projectAllotment(projectAllocationVO);
 		} catch (Exception e) {
-			log.error("exception in LoginDelegate.verify" + e.getMessage());
+			log.error("exception in ProjectAllocationDelegate.projectAllotment" + e.getMessage());
 
 			rollBack = true;
 		} finally {
 			endDBTransaction(connection, rollBack);
 		}
-		return flag;
+		return status;
 
 	}
 

@@ -1,5 +1,7 @@
 package com.alacriti.projecttracking.dao;
 
+import static com.alacriti.projecttracking.constants.DataBaseConstants.EMPLOYEE_STATUS_ASSIGNED;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,13 +11,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import static com.alacriti.projecttracking.constants.DataBaseConstants.EMPLOYEE_STATUS_ASSIGNED;
 import com.alacriti.projecttracking.model.vo.ProjectAllocationVO;
 
 public class ProjectAllocationDAO extends BaseDAO {
 	public static final Logger log = Logger
 			.getLogger(ProjectAllocationDAO.class);
-
 
 	public ProjectAllocationDAO() {
 
@@ -27,6 +27,7 @@ public class ProjectAllocationDAO extends BaseDAO {
 
 	public List<ProjectAllocationVO> getProjectAllocationList()
 			throws DAOException {
+		log.debug(" ProjectAllocationDAO.getProjectAllocationList start");
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<ProjectAllocationVO> list = null;
@@ -38,7 +39,7 @@ public class ProjectAllocationDAO extends BaseDAO {
 					+ " from sandhyad_ept_project_allocation a , sandhyad_ept_project_details p,sandhyad_ept_employee_details e,sandhyad_ept_employee_roles r"
 					+ " where  a.project_id=p.project_id "
 					+ " AND a.employee_id=e.employee_id "
-					+ " and a.emprole_id=r.emprole_id"
+					+ " AND a.emprole_id=r.emprole_id"
 					+ " order by p.project_name";
 			stmt = getPreparedStatement(getConnection(), sqlCmd);
 			rs = executeQuery(stmt);
@@ -58,8 +59,9 @@ public class ProjectAllocationDAO extends BaseDAO {
 			}
 		} catch (SQLException e) {
 
-			e.printStackTrace();
-			throw new DAOException("Exception in ProjectDAO getProjects()");
+			log.error("SQLException in ProjectAllocationDAO.getProjectAllocationList"
+					+ e.getMessage());
+			throw new DAOException();
 
 		} finally {
 
@@ -69,12 +71,15 @@ public class ProjectAllocationDAO extends BaseDAO {
 
 	}
 
-	public boolean projectAllotment(ProjectAllocationVO projectAllocation)
+	public String projectAllotment(ProjectAllocationVO projectAllocation)
 			throws DAOException {
+		log.debug(" ProjectAllocationDAO.projectAllotment start");
 
 		PreparedStatement stmt = null;
+		PreparedStatement stmtUpdate = null;
+		PreparedStatement stmtUpdated = null;
 		int rowCount = 0;
-		boolean flag = false;
+		String status = "fail";
 		try {
 			String sqlCmd = "insert into sandhyad_ept_project_allocation "
 					+ " (employee_id,project_id,employee_start_date,employee_end_date,emprole_id)"
@@ -87,22 +92,36 @@ public class ProjectAllocationDAO extends BaseDAO {
 			stmt.setInt(5, projectAllocation.getEmproleId());
 			rowCount = stmt.executeUpdate();
 			if (rowCount > 0) {
-				flag = true;
+				sqlCmd = " update sandhyad_ept_employee_details set empstatus_id=? where employee_id=? ";
+				stmtUpdate = getPreparedStatement(getConnection(), sqlCmd);
+				stmtUpdate.setInt(1, EMPLOYEE_STATUS_ASSIGNED);
+				stmtUpdate.setString(2, projectAllocation.getEmployeeId());
+				stmtUpdate.executeUpdate();
+				status = "success";
 			}
-			sqlCmd = " update sandhyad_ept_employee_details set empstatus_id=? where employee_id=? ";
-			stmt = getPreparedStatement(getConnection(), sqlCmd);
-			stmt.setInt(1,EMPLOYEE_STATUS_ASSIGNED);
-			stmt.setString(2, projectAllocation.getEmployeeId());
-			stmt.executeUpdate();
-			System.out.println("DAO");
+			/*if (projectAllocation.getEmployeeEndDate().compareTo(new Date()) < 0) {
+				sqlCmd = " update sandhyad_ept_employee_details set empstatus_id=? where employee_id=? ";
+				stmtUpdated = getPreparedStatement(getConnection(), sqlCmd);
+				stmtUpdated.setInt(1, EMPLOYEE_STATUS_NOT_ASSIGNED);
+				stmtUpdated.setString(2, projectAllocation.getEmployeeId());
+				stmtUpdated.executeUpdate();
+
+			}*/
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DAOException("Exception in ProjectDAO addProjects()");
+			log.error("SQLException in ProjectAllocationDAO.projectAllotment"
+					+ e.getMessage());
+			throw new DAOException();
+		} catch (Exception e) {
+			log.error("Exception in ProjectAllocationDAO.projectAllotment"
+					+ e.getMessage());
+			throw new DAOException();
 		} finally {
 
 			close(stmt);
+			close(stmtUpdate);
+			close(stmtUpdated);
 		}
-		return flag;
+		return status;
 	}
 
 }

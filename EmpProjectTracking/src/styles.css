@@ -1,0 +1,97 @@
+.displaypage{
+  margin-left: 400px;
+  border: #187eaf;
+  border-width: medium;
+}
+table_class {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 2px solid #dddddd;
+  text-align: left;
+  padding: 10px;
+}
+
+.tr_class:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.successmsg{
+  font-style: oblique;
+  color: chocolate;
+  font-size: large;
+}
+.container{
+  margin-top: 30px;
+}
+.containerDetails
+{
+  margin-left: 25%;
+}
+h3{
+  color: orangered;
+  font-style: italic;
+}
+.alert-position{
+
+  width: 50%;
+  font-size: 15px;
+  font-weight: 300;
+  margin-top: 13px;
+}
+table_class {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 2px solid #dddddd;
+  text-align: left;
+  padding: 10px;
+}
+
+.tr_class:nth-child(even) {
+  background-color: #dddddd;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: cornflowerblue;
+  color: white;
+}
+.heading{
+  text-align: center;
+}
+.formClass{
+  text-align: center;
+}
+.loginMessage
+{
+  text-align: center;
+  color:blue;
+}
+.loginInValidMessage
+{
+  text-align: center;
+  color:crimson;
+}
+.containerlogin{
+  margin-top: 70px;
+}
+.allotment-form-position{
+  margin-top: 150px;
+  margin-right: 50px;
+}
+#allotment{
+  position: relative;
+  left:20%;
+  top:20%;
+}
+
+
+

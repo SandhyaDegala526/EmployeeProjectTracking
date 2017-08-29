@@ -21,6 +21,8 @@ public class LoginDAO extends BaseDAO {
 	}
 
 	public boolean verify(LoginVO login) throws DAOException {
+		log.debug(" LoginDAO.verify start");
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -39,8 +41,9 @@ public class LoginDAO extends BaseDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DAOException("SQLException in ManagerDAO:", e);
+			log.error("SQLException in LoginDAO.verify"
+					+ e.getMessage());
+			throw new DAOException("SQLException in LoginDAO:", e);
 		} finally {
 			close(stmt, rs);
 		}

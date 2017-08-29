@@ -80,7 +80,7 @@ public class EmployeeBO extends BaseBO {
 	}
 
 	public List<EmployeeVO> getUnAssignedEmployees() throws BOException {
-		log.debug("in EmployeeBO.getUnAssignedEmployees");
+		log.debug(" EmployeeBO.getUnAssignedEmployees start");
 
 		List<EmployeeVO> list = null;
 		EmployeeDAO employeeDAO = null;
@@ -88,7 +88,7 @@ public class EmployeeBO extends BaseBO {
 		try {
 			System.out.println("employee Delegate");
 			employeeDAO = new EmployeeDAO(getConnection());
-			list = employeeDAO.getNotAssignedEmployees();
+			list = employeeDAO.getUnAssignedEmployees();
 		} catch (DAOException e) {
 			log.error("DAO exception in EmployeeBO.getUnAssignedEmployees"
 					+ e.getMessage());

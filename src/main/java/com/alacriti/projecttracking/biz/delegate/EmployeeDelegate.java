@@ -17,7 +17,7 @@ public class EmployeeDelegate extends BaseDelegate {
 		EmployeeBO employeeBO = null;
 		List<EmployeeVO> employeeList = null;
 		try {
-			log.debug("in EmployeeDelegate.getEmployeeList");
+			log.debug(" EmployeeDelegate.getEmployeeList start");
 			connection = startDBTransaction();
 			setConnection(connection);
 			employeeBO = new EmployeeBO(connection);
@@ -35,7 +35,7 @@ public class EmployeeDelegate extends BaseDelegate {
 	}
 
 	public String addEmployee(EmployeeVO employee) {
-		log.debug("in EmployeeDelegate.addEmployee");
+		log.debug(" EmployeeDelegate.addEmployee  start");
 		boolean rollBack = false;
 		Connection connection = null;
 		EmployeeBO employeeBO;
@@ -67,7 +67,7 @@ public class EmployeeDelegate extends BaseDelegate {
 			EmployeeBO sampleBO = new EmployeeBO(connection);
 			list = sampleBO.getUnAssignedEmployees();
 		} catch (Exception e) {
-			log.error("exception in EmployeeDelegate.getNotAssignedEmployees"
+			log.error("exception in EmployeeDelegate.getUnAssignedEmployees"
 					+ e.getMessage());
 			rollBack = true;
 		} finally {

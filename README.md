@@ -1,2 +1,0 @@
-# EmployeeProjectTracking
-Mini project

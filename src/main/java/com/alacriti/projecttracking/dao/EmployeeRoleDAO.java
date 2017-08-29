@@ -23,6 +23,7 @@ public class EmployeeRoleDAO extends BaseDAO {
 	}
 
 	public List<EmployeeRoleVO> getEmployeeRoles() throws DAOException {
+		log.debug(" EmployeeRoleDAO.getEmployeeRoles start");
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<EmployeeRoleVO> list = null;
@@ -40,7 +41,8 @@ public class EmployeeRoleDAO extends BaseDAO {
 			}
 		} catch (SQLException e) {
 
-			e.printStackTrace();
+			log.error("SQLException in EmployeeRoleDAO.getEmployeeRoles"
+					+ e.getMessage());
 			throw new DAOException("Exception in getEmployee in Employee");
 
 		} finally {

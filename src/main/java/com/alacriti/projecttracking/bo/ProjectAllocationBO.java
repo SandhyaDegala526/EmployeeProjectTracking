@@ -42,15 +42,22 @@ public class ProjectAllocationBO extends BaseBO {
 		return list;
 	}
 
-	public boolean projectAllotment(ProjectAllocationVO projectAllocation)
+	public String projectAllotment(ProjectAllocationVO projectAllocation)
 			throws BOException {
 		log.debug("in ProjectAllocationBO.projectAllotment");
 
 		ProjectAllocationDAO projectAllotmentDAO = null;
-		boolean flag = false;
+		String status = "fail";
 		try {
 			projectAllotmentDAO = new ProjectAllocationDAO(getConnection());
-			flag = projectAllotmentDAO.projectAllotment(projectAllocation);
+			/*if ((projectAllocation.getEmployeeStartDate().compareTo(new Date()) < 0)
+					|| (projectAllocation.getEmployeeEndDate().compareTo(
+							new Date()) < 0)) {
+				return "invalidDate";
+			}
+			else {*/
+				status = projectAllotmentDAO.projectAllotment(projectAllocation);
+			
 		} catch (DAOException e) {
 			log.error("DAO exception in ProjectAllocationBO.projectAllotment"
 					+ e.getMessage());
@@ -60,7 +67,7 @@ public class ProjectAllocationBO extends BaseBO {
 					+ e.getMessage());
 			throw new BOException();
 		}
-		return flag;
+		return status;
 	}
 
 }

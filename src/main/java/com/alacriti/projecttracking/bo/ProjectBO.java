@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 
 import com.alacriti.projecttracking.dao.DAOException;
 import com.alacriti.projecttracking.dao.ProjectDAO;
-import com.alacriti.projecttracking.model.vo.ProjectVO;
 import com.alacriti.projecttracking.model.vo.ProjectEmployeeGroupVO;
+import com.alacriti.projecttracking.model.vo.ProjectVO;
 
 public class ProjectBO extends BaseBO {
 	public static final Logger log = Logger.getLogger(ProjectBO.class);

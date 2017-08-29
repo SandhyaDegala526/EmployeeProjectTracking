@@ -1,5 +1,6 @@
 package com.alacriti.projecttracking.resteasy.resource;
 
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
@@ -17,15 +18,17 @@ import com.alacriti.projecttracking.model.vo.LoginVO;
 import com.alacriti.projecttracking.util.SessionUtility;
 
 @Path("/login")
+@Singleton
 public class LoginResource {
-	public static final Logger log= Logger.getLogger(LoginResource.class);
+	public static final Logger log = Logger.getLogger(LoginResource.class);
+	LoginDelegate delegate = new LoginDelegate();
+
 	@POST
 	@Path("/verifyLoginDetails")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean verify(LoginVO login, @Context HttpServletRequest request) {
-		LoginDelegate delegate = new LoginDelegate();
-
+		log.debug(" LoginDelegate.LoginResource start");
 		if (delegate.verify(login)) {
 			HttpSession session = request.getSession();
 		}
@@ -44,21 +47,18 @@ public class LoginResource {
 	@Path("/sessionDestroy")
 	@Produces(MediaType.TEXT_PLAIN)
 	public boolean sessoinDestroy(@Context HttpServletRequest request) {
-		 log.debug("SessionResource====>sessoinDestroy"); 
+		log.debug("SessionResource sessoinDestroy");
 		boolean result = false;
 		SessionUtility sessionUtility = null;
 		try {
 			sessionUtility = new SessionUtility();
 			HttpSession session = request.getSession(false);
-			System.out.println("session in checkSession :" + session.getId());
 			session.invalidate();
-			System.out.println("Checking for session " + session.getId());
 			result = sessionUtility.checkForSession(request);
 		} catch (Exception e) {
-			 log.error(e.getMessage()); 
+			log.error(e.getMessage());
 			System.out.println("Exception occured in destroying session");
 		}
-		System.out.println("result");
 		return result;
 
 	}

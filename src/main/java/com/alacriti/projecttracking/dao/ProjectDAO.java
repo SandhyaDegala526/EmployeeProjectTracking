@@ -1,6 +1,9 @@
 package com.alacriti.projecttracking.dao;
 
+import static com.alacriti.projecttracking.constants.DataBaseConstants.EMPLOYEE_STATUS_NOT_ASSIGNED;
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +26,57 @@ public class ProjectDAO extends BaseDAO {
 		super(conn);
 	}
 
+	public void updateExpiredProjectEmployees() throws DAOException {
+		log.debug(" ProjectDAO.updateExpiredProjectEmployees start");
+
+		PreparedStatement stmt = null;
+		PreparedStatement stmtUpdate = null;
+		ResultSet rs = null;
+		Date date;
+		try {
+			System.out.println("==============updateExpiredProjectEmployees start");
+			String sqlCmd = "select a.employee_id,p.project_id,p.project_end_date from " +
+					 " sandhyad_ept_project_details  p ,sandhyad_ept_project_allocation a " +
+					 " where p.project_id=a.project_id and p.project_end_date<=? ";
+			System.out.println("==============updateExpiredProjectEmployee before stmt");
+			stmt = getPreparedStatement(getConnection(), sqlCmd);
+			System.out.println("==============updateExpiredProjectEmployees before date");
+			long millis = System.currentTimeMillis();
+			date = new Date(millis);
+			stmt.setDate(1, date);
+			System.out.println("==============updateExpiredProjectEmployees before executeQuery");
+			rs = executeQuery(stmt);
+			System.out.println("==============updateExpiredProjectEmployees after executeQuery");
+			while (rs.next()) {
+				sqlCmd = " update sandhyad_ept_employee_details set empstatus_id=? where employee_id=? ";
+				stmtUpdate = getPreparedStatement(getConnection(), sqlCmd);
+				stmtUpdate.setInt(1, EMPLOYEE_STATUS_NOT_ASSIGNED);
+				stmtUpdate.setString(2, rs.getString("employee_id"));
+				stmtUpdate.executeUpdate();
+
+			}
+		} 
+		catch(SQLException e)
+		{
+			log.error("SQLException in projectDAO.updateExpiredProjectEmployees"
+					+ e.getMessage());
+			throw new DAOException();
+			
+		}
+		catch (Exception e) {
+			log.error("Exception in projectDAO.updateExpiredProjectEmployees"
+					+ e.getMessage());
+			throw new DAOException();
+		} finally {
+			close(stmtUpdate);
+			close(stmt, rs);
+			
+		}
+	}
+
 	public List<ProjectVO> getProjectList() throws DAOException {
+		log.debug(" ProjectDAO.getProjectList start");
+
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<ProjectVO> list = null;
@@ -38,8 +91,9 @@ public class ProjectDAO extends BaseDAO {
 			}
 		} catch (SQLException e) {
 
-			System.out.println("Error  :" + e.getMessage());
-			throw new DAOException("Exception in ProjectDAO getProjects()");
+			log.error("SQLException in ProjectDAO.getProjectList"
+					+ e.getMessage());
+			throw new DAOException();
 
 		} finally {
 
@@ -50,6 +104,8 @@ public class ProjectDAO extends BaseDAO {
 	}
 
 	public boolean addProject(ProjectVO project) throws DAOException {
+		log.debug(" ProjectDAO.addProject start");
+
 		PreparedStatement stmt = null;
 		boolean flag = false;
 		int rowCount;
@@ -78,8 +134,8 @@ public class ProjectDAO extends BaseDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DAOException("Exception in ProjectDAO addProjects()");
+			log.error("SQLException in ProjectDAO.addProject" + e.getMessage());
+			throw new DAOException();
 		} finally {
 
 			close(stmt);
@@ -89,6 +145,8 @@ public class ProjectDAO extends BaseDAO {
 
 	public List<ProjectEmployeeGroupVO> getDatewiseProjects(ProjectVO project)
 			throws DAOException {
+		log.debug(" ProjectDAO.getDatewiseProjects start");
+
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<ProjectEmployeeGroupVO> projectList = null;
@@ -127,17 +185,17 @@ public class ProjectDAO extends BaseDAO {
 
 				ProjectEmployeeGroupVO employeeGroupVO = new ProjectEmployeeGroupVO();
 
-				ProjectVO projectvo = new ProjectVO(rs.getString(1),rs.getDate(3),rs.getDate(4));
+				ProjectVO projectvo = new ProjectVO(rs.getString(1),
+						rs.getDate(3), rs.getDate(4));
 				employeeGroupVO.setProject(projectvo);
 				employeeGroupVO.setEmpList(rs.getString(2));
 
 				projectList.add(employeeGroupVO);
-				System.out.println("DAO 3");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-
-			throw new DAOException("Exception in ProjectDAO getProjects()");
+			log.error("SQLException in ProjectDAO.getDatewiseProjects"
+					+ e.getMessage());
+			throw new DAOException();
 
 		} finally {
 
@@ -148,6 +206,8 @@ public class ProjectDAO extends BaseDAO {
 	}
 
 	public List<ProjectVO> getProjectDurations() throws DAOException {
+		log.debug(" ProjectDAO.getProjectDurations start");
+
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<ProjectVO> projectList = null;
@@ -160,16 +220,15 @@ public class ProjectDAO extends BaseDAO {
 			stmt = getPreparedStatement(getConnection(), sqlCmd);
 			rs = executeQuery(stmt);
 			while (rs.next()) {
-				ProjectVO project = new ProjectVO(rs.getString("project_name")
-						,rs.getDate("project_start_date"),rs.getDate("project_end_date"));
-			/*	project.setProjectName(rs.getString("project_name"));
-				project.setProjectStartDate(rs.getDate("project_start_date"));
-				project.setProjectEndDate(rs.getDate("project_end_date"));*/
+				ProjectVO project = new ProjectVO(rs.getString("project_name"),
+						rs.getDate("project_start_date"),
+						rs.getDate("project_end_date"));
 				projectList.add(project);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DAOException("Exception in ProjectDAO getProjects()");
+			log.error("SQLException in ProjectDAO.getProjectDurations"
+					+ e.getMessage());
+			throw new DAOException();
 
 		} finally {
 
