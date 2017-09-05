@@ -17,7 +17,7 @@
           </div>
           <div class="form-group">
             <label>Start Date</label>
-            <input type="date" #startDateRef="ngModel"  class="form-control"
+            <input type="date" #startDateRef="ngModel"  class="form-control" min={{today}}
                    value="projectStartDate" name="projectStartDate"  placeholder="start date" ngModel required >
             <div *ngIf="startDateRef.errors && (startDateRef.dirty || startDateRef.touched)" class="alert alert-danger">
               <div [hidden]="!startDateRef.errors.required">
@@ -27,7 +27,7 @@
           </div>
           <div class="form-group">
             <label>End Date</label>
-            <input type="date"  class="form-control"
+            <input type="date"  class="form-control" min={{today}}
                    value="projectEndDate" name="projectEndDate"  placeholder="end date" ngModel  >
                  </div>
           <button type="submit"  class="btn btn-primary">Add</button>

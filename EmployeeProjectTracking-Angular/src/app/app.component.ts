@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from './login/login.service';
+import { Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import {LoginService} from './login/login.service';
 export class AppComponent implements OnInit {
   isloginers = false;
   postError;
-  constructor(private loginservice: LoginService) {}
+  constructor(private loginservice: LoginService , private titleService: Title) {}
 
 
   ngOnInit() {
@@ -33,6 +34,9 @@ export class AppComponent implements OnInit {
     this.loginservice.logout()
       .subscribe(reslogoutData => this.isloginers = reslogoutData);
 
+  }
+  public setTitle(title: string) {
+    this.titleService.setTitle(title);
   }
 
 

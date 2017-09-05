@@ -3,8 +3,8 @@ import { FormGroup , FormControl} from '@angular/forms';
 import {Router} from '@angular/router';
 import {EmployeeProjectService} from './employee-project.service';
 import {ProjectService} from '../projects/project.service';
+import {Title} from '@angular/platform-browser';
 @Component({
-  selector: 'project-allotment',
   templateUrl: './project-allotment.component.html'
 })
 
@@ -16,6 +16,7 @@ export class ProjectAllotmentComponent implements OnInit {
   successFlag;
   invalidFlag;
   failFlag;
+  public today;
   postError: string;
   projectAllotmentForm = new FormGroup({
     employeeId: new FormControl(),
@@ -35,6 +36,7 @@ export class ProjectAllotmentComponent implements OnInit {
       .subscribe(response => this.projectDetails = response);
     this._employeeProjectService.getEmployeeRoles()
       .subscribe(response => this.employeeRoles = response);
+    this.today = new Date().toJSON().split('T')[0];
     }
   public assignProject() {
     console.log('adding project');

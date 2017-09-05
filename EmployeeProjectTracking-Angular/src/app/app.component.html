@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Employee Project Tracking</title>
+  <title>Assigned Employees</title>
 </head>
 <body>
 <div>
@@ -23,12 +23,12 @@
   <nav class="navbar navbar-default home_header">
     <div class="container-fluid">
       <ul *ngIf="this.isloginers" class="nav nav-pills">
-        <li  style="margin-right: 10px;"><a routerLink="/add_employee">Add Employee</a></li>
-        <li style="margin-right: 10px;"><a routerLink="/add_project">Add Project</a></li>
-        <li style="margin-right: 10px;"><a routerLink="/assign_employee">Assign Employee</a></li>
-        <li style="margin-right: 10px;"><a routerLink="/emp_project_details">Assigned Employees</a></li>
-        <li style="margin-right: 10px;"><a routerLink="/get_datewise_projects">Date-WiseProject & Resources</a></li>
-        <li style="margin-right: 10px;"><a routerLink="/get_project_durations">Project Durations</a></li>
+        <li  style="margin-right: 10px;"><a (click)="setTitle( 'Add Employee' )" routerLink="/add_employee">Add Employee</a></li>
+        <li style="margin-right: 10px;"><a (click)="setTitle('Add Project')" routerLink="/add_project">Add Project</a></li>
+        <li style="margin-right: 10px;"><a (click)="setTitle('Assign Employee')" routerLink="/assign_employee">Assign Employee</a></li>
+        <li style="margin-right: 10px;"><a (click)="setTitle('Assigned Employees')" routerLink="/emp_project_details">Assigned Employees</a></li>
+        <li style="margin-right: 10px;"><a (click)="setTitle('Date-wise Project Resources')" routerLink="/get_datewise_projects">Date-WiseProject & Resources</a></li>
+        <li style="margin-right: 10px;"><a (click)="setTitle('Project Durations')" routerLink="/get_project_durations">Project Durations</a></li>
       </ul>
     </div>
   </nav>

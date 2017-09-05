@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -21,7 +21,7 @@ import {AuthGuard} from './authguard';
     LoginModule,
     HomepageModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, Title],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
