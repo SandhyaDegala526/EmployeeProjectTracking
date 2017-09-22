@@ -5,6 +5,8 @@
     <div>
       <div >
         <form [formGroup]="projectAllotmentForm" (ngSubmit)="assignProject()">
+
+          <div *ngIf="firstFlag">
           <div class="form-group">
             <label>Employee Id </label>
             <select  class="form-control"  required formControlName="employeeId" placeholder="Employee Id">
@@ -19,6 +21,10 @@
                        [value]="project.projectId">{{project.projectName}}</option>
               </select>
           </div>
+            <button type="button" class="btn btn-primary" (click)="firstSubmit()" routerLink="/assign_employee_continue">Save and Continue</button>
+          </div>
+
+          <div *ngIf="secondFlag">
           <div class="form-group">
             <label>Employee StartDate </label>
             <input type="date" class="form-control" required formControlName="employeeStartDate" min={{today}} placeholder="startDate">
@@ -34,7 +40,9 @@
                        [value]="role.emproleId">{{role.employeeRole}}</option>
             </select>
           </div>
+            <button type="button" (click)="back()" class="btn btn-primary">previous</button>
           <button type="submit"  class="btn btn-primary">Add</button>
+          </div>
         </form>
       </div>
     </div>

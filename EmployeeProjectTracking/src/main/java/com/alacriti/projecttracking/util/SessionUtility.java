@@ -14,5 +14,8 @@ public class SessionUtility {
 		else
 			return true;
 	}
+	public void setSession(HttpServletRequest request){
+		 request.getSession();
+	}
 
 }

@@ -9,6 +9,9 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class EmployeeService {
   private _urlAddEmployee = URLConstant.EPT_URL + 'employee/addEmployee';
+  private _urlIsEmpIdExist = URLConstant.EPT_URL + 'employee/checkEmpId';
+  private _urlEmpList = URLConstant.EPT_URL + 'employee/employeeList';
+private _urlDeleteEmp = URLConstant.EPT_URL + 'employee/deleteEmployee';
 
   constructor(private _http: Http) {
   }
@@ -26,5 +29,21 @@ export class EmployeeService {
       .map((response: Response) => response.json());
 
   }
+  postEmpId(employeeId) {
+    const headers = new Headers();
+    headers.append('Content-Type',
+      'text/plain');
+    return this._http.post(this._urlIsEmpIdExist, employeeId)
+      .map((response: Response) => response.json());
+  }
+  getEmpList() {
+    return this._http.get(this._urlEmpList). map((response: Response) => response.json());
+  }
+postDeleteEmpId(employeeId) {
+    const headers = new Headers();
+    headers.append('Content-Type' , 'text/plain');
+    return this._http.post(this._urlDeleteEmp , employeeId , headers)
+      .map((response: Response) => response.json());
+}
 
 }

@@ -14,6 +14,7 @@ export class LoginService {
   private _urlLogIn = URLConstant.EPT_URL + 'login/verifyLoginDetails';
   private _urlLogout = URLConstant.EPT_URL + 'login/sessionDestroy';
   private _urlCheckSession = URLConstant.EPT_URL + 'login/session';
+  private _urlSetSession = URLConstant.EPT_URL + 'login/setSession';
 
   constructor(private _http: Http) {
   }
@@ -43,6 +44,12 @@ export class LoginService {
     headers.append('Content-Type', ' application/json');
 
     return this._http.get(this._urlLogout, {headers: headers, withCredentials: true })
+      .map((response: Response) => response.json());
+  }
+  setSession() {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this._http.get(this._urlSetSession, {headers , withCredentials: true})
       .map((response: Response) => response.json());
   }
 

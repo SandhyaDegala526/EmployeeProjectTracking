@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="/home/sandhyad/Desktop/GitRepo/EmployeeProjectTracking/EmployeeProjectTracking"/>
 			<item value="/home/sandhyad/workspace/EmployeeProjectTracking"/>
 		</list>
 		<list key="projectNameTemplate">

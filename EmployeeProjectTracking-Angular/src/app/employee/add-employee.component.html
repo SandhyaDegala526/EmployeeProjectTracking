@@ -8,13 +8,14 @@
         <form #employeeForm="ngForm" (ngSubmit)="addEmployee(employeeForm.value)" >
         <div class="form-group">
         <label>Employee Id</label>
-        <input type="text" #nameRef="ngModel"  class="form-control"
+        <input type="text" #nameRef="ngModel"  class="form-control" (blur)="checkEmpId(nameRef.value)"
                 value="employeeId" name="employeeId"  placeholder="Employee Id" ngModel required >
           <div *ngIf="nameRef.errors && (nameRef.dirty || nameRef.touched)" class="alert alert-danger">
             <div [hidden]="!nameRef.errors.required">
               please enter id
             </div>
           </div>
+          <p *ngIf="idFlag" class="alert alert-danger">EmployeeId already exist</p>
           </div>
           <div class="form-group">
             <label>Employee Name</label>

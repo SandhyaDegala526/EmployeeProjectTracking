@@ -27,7 +27,6 @@ public addProject(value) {
   this.projectDetails.projectStartDate = value.projectStartDate;
 
   this.projectDetails.projectEndDate = value.projectEndDate;
-console.log(value.employeeId);
   this._projectService.postProjectData(this.projectDetails)
     .subscribe(response => {
         console.log('response');

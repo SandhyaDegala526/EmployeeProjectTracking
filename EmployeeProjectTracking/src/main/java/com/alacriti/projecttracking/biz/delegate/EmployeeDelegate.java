@@ -57,15 +57,16 @@ public class EmployeeDelegate extends BaseDelegate {
 	}
 
 	public List<EmployeeVO> getUnAssignedEmployees() {
-		log.debug("EmployeeDelegate.getUnAssignedEmployees start()");
+		log.debug("EmployeeDelegate.getUnAssignedEmployees() start");
 		boolean rollBack = false;
 		Connection connection = null;
 		List<EmployeeVO> list = null;
+		EmployeeBO employeeBO=null;
 		try {
 			connection = startDBTransaction();
 			setConnection(connection);
-			EmployeeBO sampleBO = new EmployeeBO(connection);
-			list = sampleBO.getUnAssignedEmployees();
+			 employeeBO = new EmployeeBO(connection);
+			list = employeeBO.getUnAssignedEmployees();
 		} catch (Exception e) {
 			log.error("exception in EmployeeDelegate.getUnAssignedEmployees"
 					+ e.getMessage());
@@ -75,6 +76,45 @@ public class EmployeeDelegate extends BaseDelegate {
 		}
 
 		return list;
+	}
+	public boolean deleteEmployee(String employeeId)
+	{
+		log.debug("EmployeeDelegate.deleteemployee() start");
+		boolean flag=false;
+		boolean rollBack=false;
+		EmployeeBO employeeBO=null;
+		Connection connection=null;
+		try{
+			connection=startDBTransaction();
+			setConnection(connection);
+			employeeBO=new EmployeeBO(connection);
+			flag=employeeBO.deleteEmployee(employeeId);
+		}catch(Exception e){
+			log.error("exception in EmployeeDelegate.deleteEmployee"+e.getMessage());
+			rollBack=true;
+		}finally{
+			endDBTransaction(connection, rollBack);
+		}
+		return flag;
+	}
+	public boolean checkEmpId(String employeeId){
+		log.debug("EmployeeDelegate.checkEmpId() start");
+		boolean flag=false;
+		boolean rollBack=false;
+		EmployeeBO employeeBO=null;
+		Connection connection=null;
+		try{
+			connection=startDBTransaction();
+			setConnection(connection);
+			employeeBO=new EmployeeBO(connection);
+			flag=employeeBO.checkEmpId(employeeId);
+		}catch(Exception e){
+			log.error("Exception in EmployeeDelegate.checkEmpId"+e.getMessage());
+			rollBack=true;
+		}finally{
+			endDBTransaction(connection, rollBack);
+		}
+		return flag;
 	}
 
 }

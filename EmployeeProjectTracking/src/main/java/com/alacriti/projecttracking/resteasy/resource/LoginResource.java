@@ -31,10 +31,19 @@ public class LoginResource {
 		log.debug(" LoginDelegate.LoginResource start");
 		boolean flag=delegate.verify(login);
 		if (flag) {
-			HttpSession session = request.getSession();
+		 SessionUtility sessionUtility = new SessionUtility();
+		 sessionUtility.setSession(request);
 		}
 		return flag;
 	}
+	@GET
+	@Path("/setSession")
+	@Produces(MediaType.TEXT_PLAIN)
+	public void setSession(@Context HttpServletRequest request) {
+		SessionUtility sessionUtility = new SessionUtility();
+		sessionUtility.setSession(request);
+	}
+	
 
 	@GET
 	@Path("/session")

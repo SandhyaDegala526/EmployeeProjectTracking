@@ -16,6 +16,8 @@ export class ProjectAllotmentComponent implements OnInit {
   successFlag;
   invalidFlag;
   failFlag;
+  firstFlag = true;
+  secondFlag = false;
   public today;
   postError: string;
   projectAllotmentForm = new FormGroup({
@@ -61,6 +63,14 @@ export class ProjectAllotmentComponent implements OnInit {
     );
     this.projectAllotmentForm.reset();
     console.log('project details posted successfully');
+  }
+  firstSubmit() {
+    this.firstFlag = false;
+    this.secondFlag = true;
+  }
+  back() {
+    this.firstFlag = true;
+    this.secondFlag = false;
   }
 }
 

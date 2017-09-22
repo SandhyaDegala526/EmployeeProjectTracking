@@ -103,5 +103,47 @@ public class EmployeeBO extends BaseBO {
 		}
 		return list;
 	}
+	public boolean deleteEmployee(String employeeId) throws BOException{
+		EmployeeDAO employeeDAO=null;
+		boolean flag=false;
+		try{
+			employeeDAO=new EmployeeDAO(getConnection());
+			flag=employeeDAO.deleteEmployee(employeeId);
+		}catch(DAOException e) {
+			log.error("DAO Exception in EmployeeBO.deleteEmployee"+e.getMessage());
+			e.printStackTrace();
+			throw new BOException();
+		}
+		catch (Exception e) {
+			log.error("exception in EmployeeBO.getUnAssignedEmployees"
+					+ e.getMessage());
+
+			e.printStackTrace();
+			throw new BOException();
+		}
+		return flag;
+	}
+	public boolean checkEmpId(String employeeId)throws BOException{
+		EmployeeDAO employeeDAO=null;
+		boolean flag=false;
+		try{
+			employeeDAO=new EmployeeDAO(getConnection());
+			flag=employeeDAO.checkEmpId(employeeId);
+		}
+		catch(DAOException e) {
+			log.error("DAO Exception in EmployeeBO.checkEmpId"+e.getMessage());
+			e.printStackTrace();
+			throw new BOException();
+		}
+		catch (Exception e) {
+			log.error("exception in EmployeeBO.checkEmpId"
+					+ e.getMessage());
+
+			e.printStackTrace();
+			throw new BOException();
+		}
+		return flag;
+		
+	}
 
 }

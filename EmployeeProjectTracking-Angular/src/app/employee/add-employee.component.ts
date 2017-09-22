@@ -9,6 +9,7 @@ export class AddEmployeeComponent {
   duplicateFlag;
   successFlag;
   failFlag;
+  idFlag= false;
   employeeValues = {
     employeeId: '',
     employeeName: '',
@@ -18,9 +19,20 @@ export class AddEmployeeComponent {
   constructor(private _employeeService: EmployeeService) {
 
   }
+  public checkEmpId(employeeId) {
+    console.log('in check emp' + employeeId);
+    this.idFlag = false;
+this._employeeService.postEmpId(employeeId).subscribe(data => {
+  if ( data === true ) {
+    this.idFlag = true;
+  }
+  });
+
+  }
 
   public addEmployee(value) {
     console.log('adding employee');
+    console.log(value);
     this.successFlag = false;
     this.duplicateFlag = false;
     this.failFlag = false;

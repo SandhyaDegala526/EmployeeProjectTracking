@@ -1,0 +1,13 @@
+<div class="col-md-4 col-md-offset-4">
+<div class="container">
+  <h3>Employee List</h3>
+  <ul class="heroes">
+    <li *ngFor="let employee of employeeDetails" (click)="onSelect(empList)">
+
+      <span class="badge">{{employee.employeeId}}</span>
+    <span>{{employee.employeeName}}</span>
+      <button class="delete" (click)="deleteEmp(employee.employeeId)">x</button>
+    </li>
+  </ul>
+</div>
+</div>

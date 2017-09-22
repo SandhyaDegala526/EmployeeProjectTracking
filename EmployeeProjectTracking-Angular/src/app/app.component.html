@@ -15,20 +15,43 @@
     </div>
     <div class="col-sm-3 col-md-3 pull-right">
       <form class="navbar-form" role="search">
+
         <a *ngIf="!this.isloginers" routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
         <a *ngIf="this.isloginers" (click)="logout()" routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Logout</a>
+
+        <button
+          class="btn btn-primary btn-margin"
+          *ngIf="!auth.isAuthenticated()"
+          (click)="auth.login()">
+         Social Log In
+        </button>
+
+        <button
+          class="btn btn-primary btn-margin"
+          *ngIf="auth.isAuthenticated()"
+          (click)="auth.logout()">
+          Log Out
+        </button>
       </form>
     </div>
   </div>
   <nav class="navbar navbar-default home_header">
     <div class="container-fluid">
-      <ul *ngIf="this.isloginers" class="nav nav-pills">
-        <li  style="margin-right: 10px;"><a (click)="setTitle( 'Add Employee' )" routerLink="/add_employee">Add Employee</a></li>
+      <ul *ngIf="this.isloginers || this.authenticateFlag" >
+        <div class="dropdown" >
+          <li style="margin-right: 10px;"><a (click)="setTitle('Home')" routerLink="/home">Home</a></li>
+          <button  style="margin-right: 10px;" class="btn  dropdown-toggle" type="button" data-toggle="dropdown">Employee
+          <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a (click)="setTitle('Add Employee')" routerLink="/add_employee">Add Employee</a></li>
+          <li><a (click)="setTitle('Employee List')" routerLink="/employeeList">Edit Employee</a></li>
+        </ul>
         <li style="margin-right: 10px;"><a (click)="setTitle('Add Project')" routerLink="/add_project">Add Project</a></li>
         <li style="margin-right: 10px;"><a (click)="setTitle('Assign Employee')" routerLink="/assign_employee">Assign Employee</a></li>
         <li style="margin-right: 10px;"><a (click)="setTitle('Assigned Employees')" routerLink="/emp_project_details">Assigned Employees</a></li>
         <li style="margin-right: 10px;"><a (click)="setTitle('Date-wise Project Resources')" routerLink="/get_datewise_projects">Date-WiseProject & Resources</a></li>
         <li style="margin-right: 10px;"><a (click)="setTitle('Project Durations')" routerLink="/get_project_durations">Project Durations</a></li>
+        </div>
       </ul>
     </div>
   </nav>
@@ -38,4 +61,3 @@
 </div>
 </body>
 </html>
-

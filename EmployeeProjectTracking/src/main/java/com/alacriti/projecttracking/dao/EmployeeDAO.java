@@ -1,6 +1,8 @@
 package com.alacriti.projecttracking.dao;
 
 import static com.alacriti.projecttracking.constants.DataBaseConstants.EMPLOYEE_STATUS_NOT_ASSIGNED;
+import static com.alacriti.projecttracking.constants.DataBaseConstants.DELETE_STATUS_NOT_DELETED;
+import static com.alacriti.projecttracking.constants.DataBaseConstants.DELETE_STATUS_DELETED;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,8 +34,10 @@ public class EmployeeDAO extends BaseDAO {
 		try {
 
 			list = new ArrayList<EmployeeVO>();
-			String sqlCmd = "select employee_id,employee_name,empstatus_id from sandhyad_ept_employee_details;";
+			String sqlCmd = "select employee_id,employee_name,empstatus_id,delete_status from sandhyad_ept_employee_details "+
+			" where delete_status=? order by employee_id;";
 			stmt = getPreparedStatement(getConnection(), sqlCmd);
+			stmt.setInt(1, DELETE_STATUS_NOT_DELETED);
 			rs = executeQuery(stmt);
 			while (rs.next()) {
 				list.add(new EmployeeVO(rs.getString(1), rs.getString(2), rs
@@ -125,9 +129,10 @@ public class EmployeeDAO extends BaseDAO {
 			}
 			list = new ArrayList<EmployeeVO>();
 			sqlCmd = "select employee_id,employee_name from sandhyad_ept_employee_details"
-					+ " where empstatus_id=?";
+					+ " where empstatus_id=? and delete_status=?";
 			stmt = getPreparedStatement(getConnection(), sqlCmd);
 			stmt.setInt(1, EMPLOYEE_STATUS_NOT_ASSIGNED);
+			stmt.setInt(2, DELETE_STATUS_NOT_DELETED);
 			resultSet = executeQuery(stmt);
 			while (resultSet.next()) {
 				list.add(new EmployeeVO(resultSet.getString(1), resultSet
@@ -148,6 +153,56 @@ public class EmployeeDAO extends BaseDAO {
 		}
 		return list;
 
+	}
+	public boolean deleteEmployee(String employeeId) throws DAOException
+	{
+		log.debug("EmployeeDAO.deleteEmployee start");
+		PreparedStatement stmt=null;
+		int count=0;
+		boolean flag=false;
+		try{
+			String sqlCmd="update sandhyad_ept_employee_details set delete_status=? where employee_id=?";
+			stmt = getPreparedStatement(getConnection(), sqlCmd);
+			stmt.setInt(1, DELETE_STATUS_DELETED);
+			stmt.setString(2, employeeId);
+			count=stmt.executeUpdate();
+			if(count>0){
+				flag=true;
+			}
+			
+		}
+		catch(Exception e){
+			log.error("exception in EmployeeDAO.deleteEmployee"+e.getMessage());
+			throw new DAOException();
+		}
+		finally{
+		close(stmt);	
+		}
+		return flag;
+	}
+	public boolean checkEmpId(String employeeId)throws DAOException {
+		PreparedStatement stmt=null;
+		ResultSet rs=null;
+		boolean flag=false;
+		try{
+			String sqlCmd = "select employee_id from sandhyad_ept_employee_details where employee_id=?;";
+			stmt = getPreparedStatement(getConnection(), sqlCmd);
+			stmt.setString(1, employeeId);
+			rs = executeQuery(stmt);
+			while (rs.next()) {
+				flag=true;
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			log.error("exception in EmployeeDAO.checkEmpId"+e.getMessage());
+			throw new DAOException();
+		}
+		finally{
+		close(stmt,rs);	
+		}
+		return flag;
+		
 	}
 
 }

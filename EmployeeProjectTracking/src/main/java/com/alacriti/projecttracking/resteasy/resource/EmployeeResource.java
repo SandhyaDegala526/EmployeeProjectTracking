@@ -1,5 +1,13 @@
 package com.alacriti.projecttracking.resteasy.resource;
 
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_APP_HEADER_REASON_CODE;
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_APP_HEADER_RESPONSE_CODE;
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_APP_REASON_CODE_EMPLOYEE_ADDED;
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_APP_REASON_CODE_EMPLOYEE_EXISTS;
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_APP_REASON_CODE_INTERNAL_ERROR;
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_STATUS_CODE_FAILURE;
+import static com.alacriti.projecttracking.constants.ResponseStatusConstants.EPT_STATUS_CODE_SUCCESS;
+
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -15,7 +23,6 @@ import org.apache.log4j.Logger;
 
 import com.alacriti.projecttracking.biz.delegate.EmployeeDelegate;
 import com.alacriti.projecttracking.model.vo.EmployeeVO;
-import static com.alacriti.projecttracking.constants.ResponseStatusConstants.*;
 
 @Path("/employee")
 @Singleton
@@ -76,4 +83,23 @@ public class EmployeeResource {
 
 		return delegate.getUnAssignedEmployees();
 	}
+	@POST
+	@Path("/checkEmpId")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public boolean checkEmpId(String employeeId){
+		System.out.println("EmployeeResource.checkEmpId start");
+		log.debug("EmployeeResource.checkEmpId start");
+		return delegate.checkEmpId(employeeId);
+	}
+@POST
+@Path("/deleteEmployee")
+@Produces(MediaType.TEXT_PLAIN)
+@Consumes(MediaType.TEXT_PLAIN)
+public boolean deleteEmployee(String employeeId){
+	System.out.println("EmployeeResource.deleteEmployee start");
+	return delegate.deleteEmployee(employeeId);
+
+}
+
 }
